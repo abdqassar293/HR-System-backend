@@ -49,4 +49,10 @@ public class JwtService {
             throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect",ex.fillInStackTrace());
         }
     }
+
+    public String generateTokenFromUsername(String username) {
+        return Jwts.builder().setSubject(username).setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + JWT_EXPIRATION)).signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
 }

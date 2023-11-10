@@ -1,9 +1,9 @@
 package com.senior.hr.controller;
 
-import com.senior.hr.DTO.AuthResponseDTO;
-import com.senior.hr.DTO.LoginDTO;
-import com.senior.hr.DTO.RegisterDTO;
-import com.senior.hr.DTO.RegisterResponseDTO;
+import com.senior.hr.DTO.*;
+import com.senior.hr.Security.RefreshTokenService;
+import com.senior.hr.exception.TokenRefreshException;
+import com.senior.hr.model.RefreshToken;
 import com.senior.hr.model.UserEntity;
 import com.senior.hr.Security.JwtService;
 import com.senior.hr.repository.UserEntityRepository;
@@ -27,14 +27,17 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
+    private final RefreshTokenService refreshTokenService;
+
     @Autowired
     public AuthController(AuthenticationManager authenticationManager,
                           UserEntityRepository userEntityRepository,
-                          PasswordEncoder passwordEncoder, JwtService jwtService) {
+                          PasswordEncoder passwordEncoder, JwtService jwtService, RefreshTokenService refreshTokenService) {
         this.authenticationManager = authenticationManager;
         this.userEntityRepository = userEntityRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.refreshTokenService = refreshTokenService;
     }
 
     @PostMapping("login")
@@ -45,7 +48,9 @@ public class AuthController {
                         loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtService.generateToken(authentication);
-        return new ResponseEntity<>(new AuthResponseDTO(token), HttpStatus.OK);
+        UserEntity userEntity = userEntityRepository.findByUsername(loginDto.getUsername()).orElse(new UserEntity());
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(userEntity.getId());
+        return new ResponseEntity<>(new AuthResponseDTO(token, refreshToken.getToken()), HttpStatus.OK);
     }
 
     @PostMapping("register")
@@ -62,5 +67,20 @@ public class AuthController {
         userEntityRepository.save(user);
         registerResponseDTO.setMessage("User registered successfully!");
         return new ResponseEntity<>(registerResponseDTO, HttpStatus.OK);
+    }
+
+    @PostMapping("refreshToken")
+    public ResponseEntity<?> refreshToken(@RequestBody TokenRefreshRequestDTO request) {
+        String requestRefreshToken = request.getRefreshToken();
+
+        return refreshTokenService.findByToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(user -> {
+                    String token = jwtService.generateTokenFromUsername(user.getUsername());
+                    return ResponseEntity.ok(new TokenRefreshResponseDTO(token, requestRefreshToken));
+                })
+                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+                        "Refresh token is not in database!"));
     }
 }

@@ -3,6 +3,6 @@ package com.senior.hr.DTO;
 import lombok.Data;
 
 @Data
-public class TokenRefresh {
+public class TokenRefreshRequestDTO {
     private String refreshToken;
 }
