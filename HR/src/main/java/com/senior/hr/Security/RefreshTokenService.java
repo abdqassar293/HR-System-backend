@@ -2,8 +2,10 @@ package com.senior.hr.Security;
 
 import com.senior.hr.exception.TokenRefreshException;
 import com.senior.hr.model.RefreshToken;
+import com.senior.hr.model.UserEntity;
 import com.senior.hr.repository.RefreshTokenRepository;
 import com.senior.hr.repository.UserEntityRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 public class RefreshTokenService {
     private static final Long refreshTokenDurationMs = 86400000L;
 
@@ -28,14 +31,23 @@ public class RefreshTokenService {
         return refreshTokenRepository.findByToken(token);
     }
 
+    @Transactional
     public RefreshToken createRefreshToken(Long userId) {
+        UserEntity userEntity = userRepository.findById(userId).get();
         RefreshToken refreshToken = new RefreshToken();
-
-        refreshToken.setUser(userRepository.findById(userId).get());
+        refreshToken.setUser(userEntity);
         refreshToken.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
-
-        refreshToken = refreshTokenRepository.save(refreshToken);
+        Optional<RefreshToken> refreshTokenOptional = refreshTokenRepository.findByUser(userEntity);
+        if (refreshTokenOptional.isPresent()) {
+            int bool = deleteByUserId(userId);
+            log.error("dbfjkdbfijsdbf :" + bool);
+            if (bool == 1) {
+                refreshToken = refreshTokenRepository.save(refreshToken);
+            }
+        } else {
+            refreshToken = refreshTokenRepository.save(refreshToken);
+        }
         return refreshToken;
     }
 

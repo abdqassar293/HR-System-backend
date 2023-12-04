@@ -1,5 +1,6 @@
 package com.senior.hr.Security;
 
+import com.senior.hr.model.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -10,17 +11,24 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 @Component
 public class JwtService {
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     public static final long JWT_EXPIRATION = 700000000;
     public String generateToken(Authentication authentication) {
         String username = authentication.getName();
+        String role = authentication.getAuthorities().toString();
         Date currentDate = new Date();
         Date expireDate = new Date(currentDate.getTime() + JWT_EXPIRATION);
-
+        Map<String, Object> claimsMap = new HashMap<>();
+        claimsMap.put("Subject", username);
+        claimsMap.put("Role", role);
+        Claims claims = Jwts.claims(claimsMap);
         String token = Jwts.builder()
-                .setSubject(username)
+                .setClaims(claims)
                 .setIssuedAt( new Date(System.currentTimeMillis()))
                 .setExpiration(expireDate)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -50,9 +58,16 @@ public class JwtService {
         }
     }
 
-    public String generateTokenFromUsername(String username) {
-        return Jwts.builder().setSubject(username).setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + JWT_EXPIRATION)).signWith(key, SignatureAlgorithm.HS256)
+    public String generateTokenFromUsername(String username, Role role) {
+        Map<String, Object> claimsMap = new HashMap<>();
+        claimsMap.put("Subject", username);
+        claimsMap.put("Role", "[" + role.getRoleName() + "]");
+        Claims claims = Jwts.claims(claimsMap);
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + JWT_EXPIRATION))
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 }

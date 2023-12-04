@@ -20,10 +20,4 @@ public class Role {
     @Column(name = "role_name", nullable = false)
     private String roleName;
 
-    @ManyToMany
-    @JoinTable(name = "role_authorities",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "authorities_id"))
-    private Set<Authority> authorities = new LinkedHashSet<>();
-
 }
