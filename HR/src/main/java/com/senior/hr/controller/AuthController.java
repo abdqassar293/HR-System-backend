@@ -20,6 +20,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @CrossOrigin(maxAge = 3600)
 @Slf4j
@@ -67,15 +69,11 @@ public class AuthController {
             registerResponseDTO.setMessage("Username is taken!");
             return new ResponseEntity<>(registerResponseDTO, HttpStatus.BAD_REQUEST);
         }
-
         UserEntity user = new UserEntity();
         user.setUsername(registerDto.getUsername());
         user.setPassword(passwordEncoder.encode((registerDto.getPassword())));
-        Role role = new Role();
-        role.setRoleName("HRManager");
-        roleRepository.save(role);
-        //Todo change the role to get it from the database.
-        user.setRole(role);
+        Optional<Role> optionalRole = roleRepository.findRoleByRoleName("Applicant");
+        optionalRole.ifPresent(user::setRole);
         userEntityRepository.save(user);
         registerResponseDTO.setMessage("User registered successfully!");
         return new ResponseEntity<>(registerResponseDTO, HttpStatus.OK);

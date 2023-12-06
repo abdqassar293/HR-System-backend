@@ -8,6 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "user_entity")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type",
+        discriminatorType = DiscriminatorType.INTEGER)
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
