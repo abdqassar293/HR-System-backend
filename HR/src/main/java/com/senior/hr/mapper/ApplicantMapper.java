@@ -2,10 +2,16 @@ package com.senior.hr.mapper;
 
 import com.senior.hr.DTO.ApplicantDTO;
 import com.senior.hr.model.Applicant;
+import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+
+@Service
 public class ApplicantMapper {
-    public Applicant ApplicantDTOToApplicant(ApplicantDTO applicantDTO) {
+    public Applicant applicantDTOToApplicant(ApplicantDTO applicantDTO) {
         Applicant applicant = new Applicant();
+        applicant.setUsername(applicantDTO.getUsername());
+        applicant.setPassword(applicantDTO.getPassword());
         applicant.setFirstName(applicantDTO.getFirstName());
         applicant.setLastName(applicantDTO.getLastName());
         applicant.setDegree(applicantDTO.getDegree());
@@ -15,9 +21,27 @@ public class ApplicantMapper {
         applicant.setSsn(applicantDTO.getSsn());
         applicant.setResidence(applicantDTO.getResidence());
         applicant.setPrevCompany(applicantDTO.getPrevCompany());
-        applicant.setDateOfBirth(applicantDTO.getDateOfBirth());
+        Date dateOfBirth = Date.valueOf(applicantDTO.getDateOfBirth());
+        applicant.setDateOfBirth(dateOfBirth);
         applicant.setPlaceOfBirth(applicantDTO.getPlaceOfBirth());
-        applicant.setUsername(applicantDTO.getUsername());
         return applicant;
+    }
+
+    public ApplicantDTO applicantToApplicantDTO(Applicant applicant) {
+        ApplicantDTO applicantDTO = new ApplicantDTO();
+        applicantDTO.setId(applicant.getId());
+        applicantDTO.setUsername(applicant.getUsername());
+        applicantDTO.setFirstName(applicant.getFirstName());
+        applicantDTO.setLastName(applicant.getLastName());
+        applicantDTO.setDegree(applicant.getDegree());
+        applicantDTO.setNumber(applicant.getNumber());
+        applicantDTO.setFatherName(applicant.getFatherName());
+        applicantDTO.setMotherName(applicant.getMotherName());
+        applicantDTO.setSsn(applicant.getSsn());
+        applicantDTO.setResidence(applicant.getResidence());
+        applicantDTO.setPrevCompany(applicant.getPrevCompany());
+        applicantDTO.setDateOfBirth(applicant.getDateOfBirth().toString());
+        applicantDTO.setPlaceOfBirth(applicant.getPlaceOfBirth());
+        return applicantDTO;
     }
 }

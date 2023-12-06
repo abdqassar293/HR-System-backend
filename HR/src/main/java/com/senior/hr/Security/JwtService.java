@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@Slf4j
 public class JwtService {
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     public static final long JWT_EXPIRATION = 700000000;
@@ -24,10 +26,11 @@ public class JwtService {
         Date currentDate = new Date();
         Date expireDate = new Date(currentDate.getTime() + JWT_EXPIRATION);
         Map<String, Object> claimsMap = new HashMap<>();
-        claimsMap.put("Subject", username);
         claimsMap.put("Role", role);
+        claimsMap.put("Subject", username);
         Claims claims = Jwts.claims(claimsMap);
         String token = Jwts.builder()
+                .setSubject(username)
                 .setClaims(claims)
                 .setIssuedAt( new Date(System.currentTimeMillis()))
                 .setExpiration(expireDate)
@@ -43,9 +46,8 @@ public class JwtService {
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token).getBody();
-        return claims.getSubject();
+        return (String) claims.get("Subject");
     }
-
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()

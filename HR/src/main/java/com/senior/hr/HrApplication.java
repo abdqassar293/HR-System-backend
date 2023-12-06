@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+
 @SpringBootApplication
 public class HrApplication {
 
@@ -44,11 +46,13 @@ class BootStrap implements CommandLineRunner {
         applicant.setUsername("abd1");
         applicant.setPassword(passwordEncoder.encode("1234"));
         applicant.setRole(applicantRole);
+        applicant.setDateOfBirth(new Date(100, 12, 5));
         applicantRepository.save(applicant);
         Employee employee = new Employee();
         employee.setUsername("abd2");
         employee.setPassword(passwordEncoder.encode("1234"));
         employee.setRole(employeeRole);
+        employee.setJobTitle("programmer");
         employeeRepository.save(employee);
     }
 }

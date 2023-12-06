@@ -10,7 +10,6 @@ public class ApplicantDTO {
     private Long id;
     private String username;
     private String password;
-    private Role role;
     private String firstName;
     private String lastName;
     private String fatherName;
@@ -18,7 +17,7 @@ public class ApplicantDTO {
     private String ssn;
     private String degree;
     private String placeOfBirth;
-    private Date dateOfBirth;
+    private String dateOfBirth;
     private String number;
     private String residence;
     private String prevCompany;

@@ -4,11 +4,10 @@ import com.senior.hr.DTO.*;
 import com.senior.hr.Security.RefreshTokenService;
 import com.senior.hr.exception.TokenRefreshException;
 import com.senior.hr.model.RefreshToken;
-import com.senior.hr.model.Role;
 import com.senior.hr.model.UserEntity;
 import com.senior.hr.Security.JwtService;
-import com.senior.hr.repository.RoleRepository;
 import com.senior.hr.repository.UserEntityRepository;
+import com.senior.hr.service.ApplicantService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,44 +16,36 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
 
 @RestController
 @CrossOrigin(maxAge = 3600)
 @Slf4j
 @RequestMapping("/api/auth")
 public class AuthController {
-    private final RoleRepository roleRepository;
-
     private final AuthenticationManager authenticationManager;
-    private final UserEntityRepository userEntityRepository;
-    private final PasswordEncoder passwordEncoder;
+
     private final JwtService jwtService;
 
     private final RefreshTokenService refreshTokenService;
 
+    private final UserEntityRepository userEntityRepository;
+
+    private final ApplicantService applicantService;
+
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager,
-                          UserEntityRepository userEntityRepository,
-                          PasswordEncoder passwordEncoder, JwtService jwtService, RefreshTokenService refreshTokenService,
-                          RoleRepository roleRepository) {
+    public AuthController(AuthenticationManager authenticationManager, UserEntityRepository userEntityRepository, JwtService jwtService, RefreshTokenService refreshTokenService, ApplicantService applicantService) {
         this.authenticationManager = authenticationManager;
         this.userEntityRepository = userEntityRepository;
-        this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.refreshTokenService = refreshTokenService;
-        this.roleRepository = roleRepository;
+        this.applicantService = applicantService;
     }
 
     @PostMapping("login")
     public ResponseEntity<AuthResponseDTO> login(@RequestBody LoginDTO loginDto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginDto.getUsername(),
-                        loginDto.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtService.generateToken(authentication);
         UserEntity userEntity = userEntityRepository.findByUsername(loginDto.getUsername()).orElse(new UserEntity());
@@ -63,18 +54,13 @@ public class AuthController {
     }
 
     @PostMapping("register")
-    public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterDTO registerDto) {
+    public ResponseEntity<RegisterResponseDTO> register(@RequestBody ApplicantDTO applicantDTO) {
         RegisterResponseDTO registerResponseDTO = new RegisterResponseDTO();
-        if (userEntityRepository.existsByUsername(registerDto.getUsername())) {
+        if (userEntityRepository.existsByUsername(applicantDTO.getUsername())) {
             registerResponseDTO.setMessage("Username is taken!");
             return new ResponseEntity<>(registerResponseDTO, HttpStatus.BAD_REQUEST);
         }
-        UserEntity user = new UserEntity();
-        user.setUsername(registerDto.getUsername());
-        user.setPassword(passwordEncoder.encode((registerDto.getPassword())));
-        Optional<Role> optionalRole = roleRepository.findRoleByRoleName("Applicant");
-        optionalRole.ifPresent(user::setRole);
-        userEntityRepository.save(user);
+        applicantService.addApplicant(applicantDTO);
         registerResponseDTO.setMessage("User registered successfully!");
         return new ResponseEntity<>(registerResponseDTO, HttpStatus.OK);
     }
@@ -83,15 +69,10 @@ public class AuthController {
     public ResponseEntity<?> refreshToken(@RequestBody TokenRefreshRequestDTO request) {
         String requestRefreshToken = request.getRefreshToken();
 
-        return refreshTokenService.findByToken(requestRefreshToken)
-                .map(refreshTokenService::verifyExpiration)
-                .map(RefreshToken::getUser)
-                .map(user -> {
-                    String token = jwtService.generateTokenFromUsername(user.getUsername(), user.getRole());
-                    return ResponseEntity.ok(new TokenRefreshResponseDTO(token, requestRefreshToken));
-                })
-                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
-                        "Refresh token is not valid!"));
+        return refreshTokenService.findByToken(requestRefreshToken).map(refreshTokenService::verifyExpiration).map(RefreshToken::getUser).map(user -> {
+            String token = jwtService.generateTokenFromUsername(user.getUsername(), user.getRole());
+            return ResponseEntity.ok(new TokenRefreshResponseDTO(token, requestRefreshToken));
+        }).orElseThrow(() -> new TokenRefreshException(requestRefreshToken, "Refresh token is not valid!"));
     }
 
     @PostMapping("isValid")
