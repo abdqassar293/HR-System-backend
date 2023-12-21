@@ -1,8 +1,6 @@
 package com.senior.hr.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -45,5 +43,4 @@ public class Applicant extends UserEntity {
 
     @Column(name = "prev_company")
     private String prevCompany;
-
 }
