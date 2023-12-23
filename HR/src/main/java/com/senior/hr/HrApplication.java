@@ -2,16 +2,15 @@ package com.senior.hr;
 
 import com.senior.hr.model.*;
 import com.senior.hr.repository.*;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -65,28 +64,34 @@ class BootStrap implements CommandLineRunner {
         previousProject1.setName("gg");
         previousProject1.setDescription("df");
         previousProjectRepository.save(previousProject1);
-        Application application = new Application();
-        application.setPreviousProjects(List.of(previousProject, previousProject1));
-        application.setApplicationDate(Date.valueOf(LocalDate.now()));
-        application.setMotivationLetter("hi asjbfjasbdiuf hsafdjonbasdjfhisadf hfiashdfoiuashdfiohsad hsoifhasiodhfoisahdfoi hsaoifhsaio hoisahfio ashfiohsaoifh saiofhisaohf iosahfoi sahdifoh asiodfhoias hfioash iofhdfiohsaiodfhsaiodfh aisohf oiasdhfiosadhf iohsdf ioashfioh asoifhosaifh oiashf iosadhfioash fiohasfio hsaoif hsioafh iosahfioash fiohas iofhasio fhiosafhsio hasio fhasoifh iosafhoifh ");
-        application.setApplicant(applicant);
-        applicationRepository.save(application);
-        Application application1 = new Application();
-        application1.setPreviousProjects(List.of(previousProject, previousProject1));
-        application1.setApplicationDate(Date.valueOf(LocalDate.now()));
-        application1.setMotivationLetter("hi asjbfjasbdiuf hsafdjonbasdjfhisadf hfiashdfoiuashdfiohsad hsoifhasiodhfoisahdfoi hsaoifhsaio hoisahfio ashfiohsaoifh saiofhisaohf iosahfoi sahdifoh asiodfhoias hfioash iofhdfiohsaiodfhsaiodfh aisohf oiasdhfiosadhf iohsdf ioashfioh asoifhosaifh oiashf iosadhfioash fiohasfio hsaoif hsioafh iosahfioash fiohas iofhasio fhiosafhsio hasio fhasoifh iosafhoifh ");
-        application1.setApplicant(applicant);
-        applicationRepository.save(application1);
+        PreviousProject previousProject2 = new PreviousProject();
+        previousProject2.setCompanyName("name");
+        previousProject2.setName("gg");
+        previousProject2.setDescription("df");
+        previousProjectRepository.save(previousProject2);
         Vacancy vacancy = new Vacancy();
         vacancy.setJobSalary(233.3);
         vacancy.setJobDescription("fvsdufusaydfuyadsgfuysdgfuyadsgfuysdgdfyusdgfyusgfyugsf");
         vacancy.setJobTitle(JobTitleEnum.HR);
-        vacancy.setApplications(List.of(application, application1));
         vacancyRepository.save(vacancy);
         Vacancy vacancy1 = new Vacancy();
         vacancy1.setJobSalary(233.3);
         vacancy1.setJobDescription("hiiiiiiiiiiiiiiiiiii");
         vacancy1.setJobTitle(JobTitleEnum.SeniorDeveloper);
         vacancyRepository.save(vacancy1);
+        Application application = new Application();
+        application.setPreviousProjects(List.of(previousProject, previousProject1));
+        application.setApplicationDate(Date.valueOf(LocalDate.now()));
+        application.setMotivationLetter("hi asjbfjasbdiuf hsafdjonbasdjfhisadf hfiashdfoiuashdfiohsad hsoifhasiodhfoisahdfoi hsaoifhsaio hoisahfio ashfiohsaoifh saiofhisaohf iosahfoi sahdifoh asiodfhoias hfioash iofhdfiohsaiodfhsaiodfh aisohf oiasdhfiosadhf iohsdf ioashfioh asoifhosaifh oiashf iosadhfioash fiohasfio hsaoif hsioafh iosahfioash fiohas iofhasio fhiosafhsio hasio fhasoifh iosafhoifh ");
+        application.setApplicant(applicant);
+        application.setVacancy(vacancy);
+        applicationRepository.save(application);
+        Application application1 = new Application();
+        application1.setPreviousProjects(List.of(previousProject2));
+        application1.setApplicationDate(Date.valueOf(LocalDate.now()));
+        application1.setMotivationLetter("hi asjbfjasbdiuf hsafdjonbasdjfhisadf hfiashdfoiuashdfiohsad hsoifhasiodhfoisahdfoi hsaoifhsaio hoisahfio ashfiohsaoifh saiofhisaohf iosahfoi sahdifoh asiodfhoias hfioash iofhdfiohsaiodfhsaiodfh aisohf oiasdhfiosadhf iohsdf ioashfioh asoifhosaifh oiashf iosadhfioash fiohasfio hsaoif hsioafh iosahfioash fiohas iofhasio fhiosafhsio hasio fhasoifh iosafhoifh ");
+        application1.setApplicant(applicant);
+        application1.setVacancy(vacancy);
+        applicationRepository.save(application1);
     }
 }

@@ -2,7 +2,6 @@ package com.senior.hr.repository;
 
 import com.senior.hr.model.RefreshToken;
 import com.senior.hr.model.UserEntity;
-import org.apache.catalina.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

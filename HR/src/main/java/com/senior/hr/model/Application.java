@@ -39,7 +39,7 @@ public class Application {
     @Column(name = "interview_date")
     private Date interviewDate;
 
-    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<PreviousProject> previousProjects = new ArrayList<>();
 
     @ManyToOne
