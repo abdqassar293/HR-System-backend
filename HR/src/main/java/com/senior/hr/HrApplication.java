@@ -71,11 +71,17 @@ class BootStrap implements CommandLineRunner {
         application.setMotivationLetter("hi asjbfjasbdiuf hsafdjonbasdjfhisadf hfiashdfoiuashdfiohsad hsoifhasiodhfoisahdfoi hsaoifhsaio hoisahfio ashfiohsaoifh saiofhisaohf iosahfoi sahdifoh asiodfhoias hfioash iofhdfiohsaiodfhsaiodfh aisohf oiasdhfiosadhf iohsdf ioashfioh asoifhosaifh oiashf iosadhfioash fiohasfio hsaoif hsioafh iosahfioash fiohas iofhasio fhiosafhsio hasio fhasoifh iosafhoifh ");
         application.setApplicant(applicant);
         applicationRepository.save(application);
+        Application application1 = new Application();
+        application1.setPreviousProjects(List.of(previousProject, previousProject1));
+        application1.setApplicationDate(Date.valueOf(LocalDate.now()));
+        application1.setMotivationLetter("hi asjbfjasbdiuf hsafdjonbasdjfhisadf hfiashdfoiuashdfiohsad hsoifhasiodhfoisahdfoi hsaoifhsaio hoisahfio ashfiohsaoifh saiofhisaohf iosahfoi sahdifoh asiodfhoias hfioash iofhdfiohsaiodfhsaiodfh aisohf oiasdhfiosadhf iohsdf ioashfioh asoifhosaifh oiashf iosadhfioash fiohasfio hsaoif hsioafh iosahfioash fiohas iofhasio fhiosafhsio hasio fhasoifh iosafhoifh ");
+        application1.setApplicant(applicant);
+        applicationRepository.save(application1);
         Vacancy vacancy = new Vacancy();
         vacancy.setJobSalary(233.3);
         vacancy.setJobDescription("fvsdufusaydfuyadsgfuysdgfuyadsgfuysdgdfyusdgfyusgfyugsf");
         vacancy.setJobTitle(JobTitleEnum.HR);
-        vacancy.setApplications(List.of(application));
+        vacancy.setApplications(List.of(application, application1));
         vacancyRepository.save(vacancy);
         Vacancy vacancy1 = new Vacancy();
         vacancy1.setJobSalary(233.3);
