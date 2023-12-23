@@ -41,7 +41,6 @@ public class RefreshTokenService {
         Optional<RefreshToken> refreshTokenOptional = refreshTokenRepository.findByUser(userEntity);
         if (refreshTokenOptional.isPresent()) {
             int bool = deleteByUserId(userId);
-            log.error("dbfjkdbfijsdbf :" + bool);
             if (bool == 1) {
                 refreshToken = refreshTokenRepository.save(refreshToken);
             }

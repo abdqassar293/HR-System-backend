@@ -1,9 +1,6 @@
 package com.senior.hr.DTO;
 
-import com.senior.hr.model.Role;
 import lombok.Data;
-
-import java.sql.Date;
 
 @Data
 public class ApplicantDTO {
