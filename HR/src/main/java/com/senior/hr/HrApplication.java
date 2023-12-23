@@ -1,11 +1,7 @@
 package com.senior.hr;
 
-import com.senior.hr.model.Applicant;
-import com.senior.hr.model.Employee;
-import com.senior.hr.model.Role;
-import com.senior.hr.repository.ApplicantRepository;
-import com.senior.hr.repository.EmployeeRepository;
-import com.senior.hr.repository.RoleRepository;
+import com.senior.hr.model.*;
+import com.senior.hr.repository.*;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -15,6 +11,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.List;
 
 @SpringBootApplication
 public class HrApplication {
@@ -31,8 +30,10 @@ class BootStrap implements CommandLineRunner {
     private final RoleRepository roleRepository;
     private final ApplicantRepository applicantRepository;
     private final EmployeeRepository employeeRepository;
+    private final VacancyRepository vacancyRepository;
     private final PasswordEncoder passwordEncoder;
-
+    private final PreviousProjectRepository previousProjectRepository;
+    private final ApplicationRepository applicationRepository;
     @Transactional
     @Override
     public void run(String... args) throws Exception {
@@ -54,5 +55,32 @@ class BootStrap implements CommandLineRunner {
         employee.setRole(employeeRole);
         employee.setJobTitle("programmer");
         employeeRepository.save(employee);
+        PreviousProject previousProject = new PreviousProject();
+        previousProject.setCompanyName("name");
+        previousProject.setName("gg");
+        previousProject.setDescription("df");
+        previousProjectRepository.save(previousProject);
+        PreviousProject previousProject1 = new PreviousProject();
+        previousProject1.setCompanyName("name");
+        previousProject1.setName("gg");
+        previousProject1.setDescription("df");
+        previousProjectRepository.save(previousProject1);
+        Application application = new Application();
+        application.setPreviousProjects(List.of(previousProject, previousProject1));
+        application.setApplicationDate(Date.valueOf(LocalDate.now()));
+        application.setMotivationLetter("hi asjbfjasbdiuf hsafdjonbasdjfhisadf hfiashdfoiuashdfiohsad hsoifhasiodhfoisahdfoi hsaoifhsaio hoisahfio ashfiohsaoifh saiofhisaohf iosahfoi sahdifoh asiodfhoias hfioash iofhdfiohsaiodfhsaiodfh aisohf oiasdhfiosadhf iohsdf ioashfioh asoifhosaifh oiashf iosadhfioash fiohasfio hsaoif hsioafh iosahfioash fiohas iofhasio fhiosafhsio hasio fhasoifh iosafhoifh ");
+        application.setApplicant(applicant);
+        applicationRepository.save(application);
+        Vacancy vacancy = new Vacancy();
+        vacancy.setJobSalary(233.3);
+        vacancy.setJobDescription("fvsdufusaydfuyadsgfuysdgfuyadsgfuysdgdfyusdgfyusgfyugsf");
+        vacancy.setJobTitle(JobTitleEnum.HR);
+        vacancy.setApplications(List.of(application));
+        vacancyRepository.save(vacancy);
+        Vacancy vacancy1 = new Vacancy();
+        vacancy1.setJobSalary(233.3);
+        vacancy1.setJobDescription("hiiiiiiiiiiiiiiiiiii");
+        vacancy1.setJobTitle(JobTitleEnum.SeniorDeveloper);
+        vacancyRepository.save(vacancy1);
     }
 }
