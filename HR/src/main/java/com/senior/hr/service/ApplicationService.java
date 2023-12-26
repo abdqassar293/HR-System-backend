@@ -13,7 +13,7 @@ public interface ApplicationService {
 
     List<ApplicationDTO> findAllApplicationsByVacancy(Long vacancyID);
 
-    List<ApplicationDTO> findAllApplicationsByApplicant(Long applicantID);
+    List<ApplicationDTO> findAllApplicationsByApplicant(String applicantUsername);
 
     List<ApplicationDTO> findAllApplications();
 

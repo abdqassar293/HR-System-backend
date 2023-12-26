@@ -34,8 +34,8 @@ public class ApplicationController {
     }
 
     @GetMapping("listAllByApplicant")
-    public List<ApplicationDTO> listAllByApplicant(@RequestParam String applicantID) {
-        return applicationService.findAllApplicationsByApplicant(Long.valueOf(applicantID));
+    public List<ApplicationDTO> listAllByApplicant(@RequestParam String applicantUsername) {
+        return applicationService.findAllApplicationsByApplicant(applicantUsername);
     }
 
     @GetMapping("listAllByVacancy")

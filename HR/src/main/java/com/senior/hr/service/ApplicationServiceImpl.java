@@ -58,9 +58,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     @Transactional
-    public List<ApplicationDTO> findAllApplicationsByApplicant(Long applicantID) {
+    public List<ApplicationDTO> findAllApplicationsByApplicant(String applicantUsername) {
         //TODO exception Handling
-        Applicant applicant = applicantRepository.findById(applicantID).orElseThrow();
+        Applicant applicant = applicantRepository.findByUsername(applicantUsername).orElseThrow();
         return applicationRepository.findAllByApplicant(applicant).stream().map(applicationMapper::applicationToApplicationDTO).collect(Collectors.toList());
     }
 

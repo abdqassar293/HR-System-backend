@@ -71,14 +71,13 @@ public class AuthController {
 
         return refreshTokenService.findByToken(requestRefreshToken).map(refreshTokenService::verifyExpiration).map(RefreshToken::getUser).map(user -> {
             String token = jwtService.generateTokenFromUsername(user.getUsername(), user.getRole());
+            log.error("formRefresh: " + token);
             return ResponseEntity.ok(new TokenRefreshResponseDTO(token, requestRefreshToken));
         }).orElseThrow(() -> new TokenRefreshException(requestRefreshToken, "Refresh token is not valid!"));
     }
 
     @PostMapping("isValid")
     public ResponseEntity<ValidityResponseDTO> isValid(@RequestBody ValidityRequestDTO validityRequestDTO) {
-        /*String token = validityRequestDTO.getToken();
-        return jwtService.validateTokenForIsValid(token);*/
         String token = validityRequestDTO.getToken();
         Boolean isValid = jwtService.validateTokenForIsValid(token);
         ValidityResponseDTO validityResponseDTO = new ValidityResponseDTO();
