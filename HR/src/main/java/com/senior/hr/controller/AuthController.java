@@ -76,16 +76,18 @@ public class AuthController {
     }
 
     @PostMapping("isValid")
-    public Boolean isValid(@RequestBody ValidityRequestDTO validityRequestDTO) {
-        String token = validityRequestDTO.getToken();
-        return jwtService.validateTokenForIsValid(token);
+    public ResponseEntity<ValidityResponseDTO> isValid(@RequestBody ValidityRequestDTO validityRequestDTO) {
         /*String token = validityRequestDTO.getToken();
-        Boolean isValid=jwtService.validateToken(token);
-        ValidityResponseDTO validityResponseDTO=new ValidityResponseDTO();
+        return jwtService.validateTokenForIsValid(token);*/
+        String token = validityRequestDTO.getToken();
+        Boolean isValid = jwtService.validateTokenForIsValid(token);
+        ValidityResponseDTO validityResponseDTO = new ValidityResponseDTO();
         validityResponseDTO.setIsValid(isValid);
-        UserEntity userEntity=userEntityRepository.findByUsername(jwtService.getUsernameFromJWT(token)).get();
-        validityResponseDTO.setUsername(userEntity.getUsername());
-        validityResponseDTO.setRole(userEntity.getRole().getRoleName());
-        return new ResponseEntity<>(validityResponseDTO,HttpStatus.OK);*/
+        if (isValid) {
+            UserEntity userEntity = userEntityRepository.findByUsername(jwtService.getUsernameFromJWT(token)).get();
+            validityResponseDTO.setUsername(userEntity.getUsername());
+            validityResponseDTO.setRole(userEntity.getRole().getRoleName());
+        }
+        return new ResponseEntity<>(validityResponseDTO, HttpStatus.OK);
     }
 }

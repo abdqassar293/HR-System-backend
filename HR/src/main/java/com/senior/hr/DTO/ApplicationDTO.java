@@ -13,9 +13,9 @@ public class ApplicationDTO {
     private String englishLevel;
     private String programmingLanguage;
     private List<PreviousProjectDTO> previousProjects = new ArrayList<>();
-    private Date applicationDate;
+    private String applicationDate;
     private Boolean qualifiedForInterview;
-    private Date interviewDate;
+    private String interviewDate;
     private VacancyDTO vacancy;
     private ApplicantDTO applicant;
 

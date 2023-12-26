@@ -40,7 +40,10 @@ public class ApplicantMapper {
         applicantDTO.setSsn(applicant.getSsn());
         applicantDTO.setResidence(applicant.getResidence());
         applicantDTO.setPrevCompany(applicant.getPrevCompany());
-        applicantDTO.setDateOfBirth(applicant.getDateOfBirth().toString());
+        Date date = applicant.getDateOfBirth();
+        if (date != null) {
+            applicantDTO.setDateOfBirth(date.toString());
+        }
         applicantDTO.setPlaceOfBirth(applicant.getPlaceOfBirth());
         return applicantDTO;
     }
