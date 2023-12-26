@@ -33,12 +33,6 @@ public class Application {
     @Column(name = "application_date")
     private Date applicationDate;
 
-    @Column(name = "qualified_for_interview")
-    private Boolean qualifiedForInterview;
-
-    @Column(name = "interview_date")
-    private Date interviewDate;
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<PreviousProject> previousProjects = new ArrayList<>();
 
@@ -50,4 +44,9 @@ public class Application {
     @JoinColumn(name = "vacancy_id")
     private Vacancy vacancy;
 
+    @Column(name = "qualified_for_interview")
+    private Boolean qualifiedForInterview;
+
+    @Column(name = "interview_date")
+    private Date interviewDate;
 }

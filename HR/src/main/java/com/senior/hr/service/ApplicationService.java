@@ -1,6 +1,8 @@
 package com.senior.hr.service;
 
 import com.senior.hr.DTO.ApplicationDTO;
+import com.senior.hr.DTO.QualifyApplicationRequestDTO;
+import com.senior.hr.DTO.QualifyApplicationResponseDTO;
 
 import java.util.List;
 
@@ -14,5 +16,9 @@ public interface ApplicationService {
     List<ApplicationDTO> findAllApplicationsByApplicant(Long applicantID);
 
     List<ApplicationDTO> findAllApplications();
+
+    QualifyApplicationResponseDTO qualifyApplication(QualifyApplicationRequestDTO qualifyApplicationRequestDTO);
+
+    List<ApplicationDTO> findAllInterviews();
 
 }

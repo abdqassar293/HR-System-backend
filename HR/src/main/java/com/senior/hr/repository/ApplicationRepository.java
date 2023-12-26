@@ -11,4 +11,6 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     List<Application> findAllByApplicant(Applicant applicant);
 
     List<Application> findAllByVacancy(Vacancy vacancy);
+
+    List<Application> findAllByQualifiedForInterviewIsTrue();
 }

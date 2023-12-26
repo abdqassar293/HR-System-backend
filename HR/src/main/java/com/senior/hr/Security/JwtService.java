@@ -60,6 +60,18 @@ public class JwtService {
         }
     }
 
+    public boolean validateTokenForIsValid(String token) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
     public String generateTokenFromUsername(String username, Role role) {
         Map<String, Object> claimsMap = new HashMap<>();
         claimsMap.put("Subject", username);

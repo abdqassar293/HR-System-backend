@@ -1,6 +1,8 @@
 package com.senior.hr.service;
 
 import com.senior.hr.DTO.ApplicationDTO;
+import com.senior.hr.DTO.QualifyApplicationRequestDTO;
+import com.senior.hr.DTO.QualifyApplicationResponseDTO;
 import com.senior.hr.mapper.ApplicationMapper;
 import com.senior.hr.model.Applicant;
 import com.senior.hr.model.Application;
@@ -65,5 +67,25 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public List<ApplicationDTO> findAllApplications() {
         return applicationRepository.findAll().stream().map(applicationMapper::applicationToApplicationDTO).collect(Collectors.toList());
+    }
+
+    @Override
+    public QualifyApplicationResponseDTO qualifyApplication(QualifyApplicationRequestDTO qualifyApplicationRequestDTO) {
+        //Todo exception Handling
+        Application application = applicationRepository.findById(Long.valueOf(qualifyApplicationRequestDTO.getApplicationId())).orElseThrow();
+        application.setInterviewDate(Date.valueOf(qualifyApplicationRequestDTO.getInterviewDate()));
+        application.setQualifiedForInterview(true);
+        application.setId(Long.valueOf(qualifyApplicationRequestDTO.getApplicationId()));
+        application = applicationRepository.save(application);
+        QualifyApplicationResponseDTO qualifyApplicationResponseDTO = new QualifyApplicationResponseDTO();
+        qualifyApplicationResponseDTO.setInterviewDate(application.getInterviewDate().toString());
+        qualifyApplicationResponseDTO.setMessage("Date reserved");
+        return qualifyApplicationResponseDTO;
+    }
+
+    @Override
+    @Transactional
+    public List<ApplicationDTO> findAllInterviews() {
+        return applicationRepository.findAllByQualifiedForInterviewIsTrue().stream().map(applicationMapper::applicationToApplicationDTO).collect(Collectors.toList());
     }
 }

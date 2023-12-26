@@ -92,6 +92,7 @@ class BootStrap implements CommandLineRunner {
         application1.setMotivationLetter("hi asjbfjasbdiuf hsafdjonbasdjfhisadf hfiashdfoiuashdfiohsad hsoifhasiodhfoisahdfoi hsaoifhsaio hoisahfio ashfiohsaoifh saiofhisaohf iosahfoi sahdifoh asiodfhoias hfioash iofhdfiohsaiodfhsaiodfh aisohf oiasdhfiosadhf iohsdf ioashfioh asoifhosaifh oiashf iosadhfioash fiohasfio hsaoif hsioafh iosahfioash fiohas iofhasio fhiosafhsio hasio fhasoifh iosafhoifh ");
         application1.setApplicant(applicant);
         application1.setVacancy(vacancy);
+        application1.setQualifiedForInterview(true);
         applicationRepository.save(application1);
     }
 }
