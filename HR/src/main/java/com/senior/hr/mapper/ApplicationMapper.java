@@ -20,8 +20,9 @@ public class ApplicationMapper {
         application.setEnglishLevel(applicationDTO.getEnglishLevel());
         application.setMotivationLetter(applicationDTO.getMotivationLetter());
         application.setProgrammingLanguage(application.getProgrammingLanguage());
-        application.setApplicationDate(Date.valueOf(applicationDTO.getApplicationDate()));
-        application.setInterviewDate(Date.valueOf(applicationDTO.getInterviewDate()));
+        if (applicationDTO.getInterviewDate() != null) {
+            application.setInterviewDate(Date.valueOf(applicationDTO.getInterviewDate()));
+        }
         application.setQualifiedForInterview(applicationDTO.getQualifiedForInterview());
         application.setPreviousProjects(applicationDTO.getPreviousProjects().stream().map(previousProjectMapper::previousProjectDTOTOPreviousProject).collect(Collectors.toList()));
         return application;

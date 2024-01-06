@@ -50,7 +50,7 @@ public class AuthController {
         String token = jwtService.generateToken(authentication);
         UserEntity userEntity = userEntityRepository.findByUsername(loginDto.getUsername()).orElse(new UserEntity());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userEntity.getId());
-        return new ResponseEntity<>(new AuthResponseDTO(token, refreshToken.getToken()), HttpStatus.OK);
+        return new ResponseEntity<>(new AuthResponseDTO(token, refreshToken.getToken(), userEntity.getRole().getRoleName()), HttpStatus.OK);
     }
 
     @PostMapping("register")

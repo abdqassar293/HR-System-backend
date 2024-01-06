@@ -18,11 +18,11 @@ public class Vacancy {
     private Long id;
     @Enumerated(EnumType.STRING)
     private JobTitleEnum jobTitle;
+    private Integer yearsOfExperience;
     private Double jobSalary;
     @Column(name = "job_description")
     @JdbcTypeCode(SqlTypes.CLOB)
     private String jobDescription;
-
     @OneToMany(mappedBy = "vacancy", orphanRemoval = true)
     private List<Application> applications = new ArrayList<>();
 

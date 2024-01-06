@@ -34,7 +34,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     public void addApplication(ApplicationDTO applicationDTO) {
         Application application = applicationMapper.applicationDTOToApplication(applicationDTO);
         //TODO Exception handling
-        Applicant applicant = applicantRepository.findById(applicationDTO.getApplicant().getId()).orElseThrow();
+        Applicant applicant = applicantRepository.findByUsername(applicationDTO.getApplicant().getUsername()).orElseThrow();
         Vacancy vacancy = vacancyRepository.findById(applicationDTO.getVacancy().getId()).orElseThrow();
         application.setApplicant(applicant);
         application.setVacancy(vacancy);

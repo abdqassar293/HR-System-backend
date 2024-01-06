@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @SpringBootApplication
 public class HrApplication {
@@ -33,6 +34,13 @@ class BootStrap implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final PreviousProjectRepository previousProjectRepository;
     private final ApplicationRepository applicationRepository;
+    private final PositionRepository positionRepository;
+    private final ManagerRepository managerRepository;
+    private final BenefitRepository benefitRepository;
+    private final WarningTypeRepository warningTypeRepository;
+    private final WarningRepository warningRepository;
+    private final VacationRepository vacationRepository;
+
     @Transactional
     @Override
     public void run(String... args) throws Exception {
@@ -40,20 +48,50 @@ class BootStrap implements CommandLineRunner {
         applicantRole.setRoleName("Applicant");
         roleRepository.save(applicantRole);
         Role employeeRole = new Role();
-        employeeRole.setRoleName("employee");
+        employeeRole.setRoleName("Employee");
         roleRepository.save(employeeRole);
+        Role managerRole = new Role();
+        managerRole.setRoleName("Manager");
+        roleRepository.save(managerRole);
         Applicant applicant = new Applicant();
         applicant.setUsername("abd1");
         applicant.setPassword(passwordEncoder.encode("1234"));
         applicant.setRole(applicantRole);
         applicant.setDateOfBirth(new Date(100, 12, 5));
         applicantRepository.save(applicant);
+        Position position = new Position();
+        position.setPositionName("juniorDev");
+        positionRepository.save(position);
+        Manager manager = new Manager();
+        manager.setUsername("abdm");
+        manager.setPassword(passwordEncoder.encode("1234"));
+        manager.setRole(managerRole);
+        managerRepository.save(manager);
+        Benefit benefit = new Benefit();
+        benefit.setName("benefit1");
+        benefit.setCutPercentage(2.3);
+        Benefit benefit1 = new Benefit();
+        benefit1.setName("benefit2");
+        benefit1.setCutPercentage(3.33);
+        benefitRepository.saveAll(List.of(benefit, benefit1));
+        WarningType warningType = new WarningType();
+        warningType.setName("Late");
+        warningType.setMark(1);
+        warningTypeRepository.save(warningType);
         Employee employee = new Employee();
         employee.setUsername("abd2");
         employee.setPassword(passwordEncoder.encode("1234"));
         employee.setRole(employeeRole);
-        employee.setJobTitle("programmer");
+        employee.setPosition(position);
+        employee.setManager(manager);
+        employee.setBenefits(List.of(benefit, benefit1));
         employeeRepository.save(employee);
+        Warning warning = new Warning();
+        warning.setWarningType(warningType);
+        warning.setDescription("dsf");
+        warning.setIssuerManager(manager);
+        warning.setEmployee(employee);
+        warningRepository.save(warning);
         PreviousProject previousProject = new PreviousProject();
         previousProject.setCompanyName("name");
         previousProject.setName("gg");
@@ -71,11 +109,13 @@ class BootStrap implements CommandLineRunner {
         previousProjectRepository.save(previousProject2);
         Vacancy vacancy = new Vacancy();
         vacancy.setJobSalary(233.3);
+        vacancy.setYearsOfExperience(3);
         vacancy.setJobDescription("fvsdufusaydfuyadsgfuysdgfuyadsgfuysdgdfyusdgfyusgfyugsf");
         vacancy.setJobTitle(JobTitleEnum.HR);
         vacancyRepository.save(vacancy);
         Vacancy vacancy1 = new Vacancy();
         vacancy1.setJobSalary(233.3);
+        vacancy1.setYearsOfExperience(5);
         vacancy1.setJobDescription("hiiiiiiiiiiiiiiiiiii");
         vacancy1.setJobTitle(JobTitleEnum.SeniorDeveloper);
         vacancyRepository.save(vacancy1);
@@ -93,6 +133,22 @@ class BootStrap implements CommandLineRunner {
         application1.setApplicant(applicant);
         application1.setVacancy(vacancy);
         //application1.setQualifiedForInterview(true);
+        Vacation vacation = new Vacation();
+        vacation.setNumberOfDays(2);
+        vacation.setStartDate(Date.valueOf("2024-01-07"));
+        vacation.setEndDate(Date.valueOf("2024-01-09"));
+        vacation.setPayed(true);
+        vacation.setEmployee(employee);
+        vacation.setApproved(false);
+        vacationRepository.save(vacation);
+        Vacation vacation1 = new Vacation();
+        vacation1.setNumberOfDays(2);
+        vacation1.setStartDate(Date.valueOf("2024-01-07"));
+        vacation1.setEndDate(Date.valueOf("2024-01-09"));
+        vacation1.setPayed(true);
+        vacation1.setEmployee(employee);
+        vacation1.setApproved(true);
+        vacationRepository.save(vacation1);
         applicationRepository.save(application1);
     }
 }

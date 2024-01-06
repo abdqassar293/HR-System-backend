@@ -10,6 +10,7 @@ public class VacancyMapper {
     public Vacancy vacancyDTOToVacancy(VacancyDTO vacancyDTO) {
         Vacancy vacancy = new Vacancy();
         vacancy.setJobDescription(vacancyDTO.getJobDescription());
+        vacancy.setYearsOfExperience(vacancyDTO.getYearsOfExperience());
         vacancy.setJobTitle(JobTitleEnum.valueOf(vacancyDTO.getJobTitle()));
         vacancy.setJobSalary(vacancyDTO.getJobSalary());
         return vacancy;
@@ -18,6 +19,7 @@ public class VacancyMapper {
     public VacancyDTO vacancyToVacancyDTO(Vacancy vacancy) {
         VacancyDTO vacancyDTO = new VacancyDTO();
         vacancyDTO.setId(vacancy.getId());
+        vacancyDTO.setYearsOfExperience(vacancy.getYearsOfExperience());
         vacancyDTO.setJobSalary(vacancy.getJobSalary());
         vacancyDTO.setJobDescription(vacancy.getJobDescription());
         vacancyDTO.setJobTitle(vacancy.getJobTitle().toString());
