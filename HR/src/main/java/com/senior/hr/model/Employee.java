@@ -14,6 +14,7 @@ import java.util.Objects;
 @Entity
 @DiscriminatorValue("2")
 public class Employee extends UserEntity {
+    private Double salary;
     @ManyToOne
     @JoinColumn(name = "position_id")
     private Position position;

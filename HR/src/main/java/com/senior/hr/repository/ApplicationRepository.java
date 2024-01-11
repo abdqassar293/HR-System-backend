@@ -13,4 +13,6 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     List<Application> findAllByVacancy(Vacancy vacancy);
 
     List<Application> findAllByQualifiedForInterviewIsTrue();
+
+    void deleteAllByApplicant(Applicant applicant);
 }

@@ -1,16 +1,12 @@
 package com.senior.hr.service;
 
 import com.senior.hr.DTO.ApplicationDTO;
+import com.senior.hr.DTO.HireRequestDTO;
 import com.senior.hr.DTO.QualifyApplicationRequestDTO;
 import com.senior.hr.DTO.QualifyApplicationResponseDTO;
 import com.senior.hr.mapper.ApplicationMapper;
-import com.senior.hr.model.Applicant;
-import com.senior.hr.model.Application;
-import com.senior.hr.model.Vacancy;
-import com.senior.hr.repository.ApplicantRepository;
-import com.senior.hr.repository.ApplicationRepository;
-import com.senior.hr.repository.PreviousProjectRepository;
-import com.senior.hr.repository.VacancyRepository;
+import com.senior.hr.model.*;
+import com.senior.hr.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,6 +24,11 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final VacancyRepository vacancyRepository;
     private final ApplicantRepository applicantRepository;
     private final PreviousProjectRepository previousProjectRepository;
+    private final BenefitRepository benefitRepository;
+    private final EmployeeRepository employeeRepository;
+    private final PositionRepository positionRepository;
+    private final ManagerRepository managerRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     @Transactional
@@ -87,5 +88,35 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Transactional
     public List<ApplicationDTO> findAllInterviews() {
         return applicationRepository.findAllByQualifiedForInterviewIsTrue().stream().map(applicationMapper::applicationToApplicationDTO).collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public void HireApplicant(HireRequestDTO hireRequestDTO) {
+        //Todo add exception handling
+        Application application = applicationRepository.findById(hireRequestDTO.getApplicationId()).orElseThrow();
+        applicationRepository.deleteAllByApplicant(application.getApplicant());
+        Applicant applicant = applicantRepository.findByUsername(application.getApplicant().getUsername()).orElseThrow();
+        applicantRepository.deleteById(applicant.getId());
+        Employee employee = new Employee();
+        employee.setUsername(applicant.getUsername());
+        employee.setPassword(applicant.getPassword());
+        employee.setFirstName(applicant.getFirstName());
+        employee.setLastName(applicant.getLastName());
+        employee.setSsn(applicant.getSsn());
+        employee.setNumber(applicant.getNumber());
+        employee.setResidence(applicant.getResidence());
+        employee.setDegree(applicant.getDegree());
+        employee.setMotherName(applicant.getMotherName());
+        employee.setFatherName(applicant.getFatherName());
+        employee.setRole(roleRepository.findRoleByRoleName("Employee").orElseThrow());
+        employee.setPlaceOfBirth(applicant.getPlaceOfBirth());
+        employee.setDateOfBirth(applicant.getDateOfBirth());
+        List<Benefit> benefits = benefitRepository.findAll();
+        employee.setSalary(application.getVacancy().getJobSalary());
+        employee.setBenefits(List.of(benefits.get(0), benefits.get(1)));
+        employee.setPosition(positionRepository.findByPositionName(application.getVacancy().getJobTitle().getPositionName()).orElseThrow());
+        employee.setManager(managerRepository.findByUsername(hireRequestDTO.getManagerUsername()).orElseThrow());
+        employeeRepository.save(employee);
     }
 }

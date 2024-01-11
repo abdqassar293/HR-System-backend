@@ -12,7 +12,7 @@ import java.sql.Date;
 @Table(name = "user_entity")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type",
-        discriminatorType = DiscriminatorType.INTEGER)
+        discriminatorType = DiscriminatorType.STRING)
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

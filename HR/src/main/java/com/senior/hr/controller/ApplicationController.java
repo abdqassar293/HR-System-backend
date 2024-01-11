@@ -1,6 +1,7 @@
 package com.senior.hr.controller;
 
 import com.senior.hr.DTO.ApplicationDTO;
+import com.senior.hr.DTO.HireRequestDTO;
 import com.senior.hr.DTO.QualifyApplicationRequestDTO;
 import com.senior.hr.DTO.QualifyApplicationResponseDTO;
 import com.senior.hr.service.ApplicationService;
@@ -51,5 +52,10 @@ public class ApplicationController {
     @PostMapping("qualifyApplication")
     public QualifyApplicationResponseDTO qualifyApplication(@RequestBody QualifyApplicationRequestDTO qualifyApplicationRequestDTO) {
         return applicationService.qualifyApplication(qualifyApplicationRequestDTO);
+    }
+
+    @PostMapping("hire")
+    public void hire(@RequestBody HireRequestDTO hireRequestDTO) {
+        applicationService.HireApplicant(hireRequestDTO);
     }
 }

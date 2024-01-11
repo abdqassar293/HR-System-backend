@@ -17,4 +17,6 @@ public class ManagerDTO {
     private String dateOfBirth;
     private String number;
     private String residence;
+    private Double salary;
+
 }

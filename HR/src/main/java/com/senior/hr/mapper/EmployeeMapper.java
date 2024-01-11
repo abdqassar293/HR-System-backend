@@ -28,6 +28,7 @@ public class EmployeeMapper {
         employee.setFatherName(employeeDTO.getFatherName());
         employee.setResidence(employeeDTO.getResidence());
         employee.setSsn(employeeDTO.getSsn());
+        employee.setSalary(employeeDTO.getSalary());
         if (employeeDTO.getDateOfBirth() != null) {
             employee.setDateOfBirth(Date.valueOf(employeeDTO.getDateOfBirth()));
         }
@@ -48,6 +49,7 @@ public class EmployeeMapper {
         employeeDTO.setPlaceOfBirth(employee.getPlaceOfBirth());
         employeeDTO.setDegree(employee.getDegree());
         employeeDTO.setNumber(employee.getNumber());
+        employeeDTO.setSalary(employee.getSalary());
         Date date = employee.getDateOfBirth();
         if (date != null) {
             employeeDTO.setDateOfBirth(date.toString());

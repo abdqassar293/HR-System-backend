@@ -44,4 +44,6 @@ public class ApplicantServiceImpl implements ApplicantService {
     public List<ApplicantDTO> findAllApplicant() {
         return applicantRepository.findAll().stream().map(applicantMapper::applicantToApplicantDTO).collect(Collectors.toList());
     }
+
+
 }

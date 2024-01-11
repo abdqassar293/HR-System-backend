@@ -17,5 +17,4 @@ public class ApplicationDTO {
     private String interviewDate;
     private VacancyDTO vacancy;
     private ApplicantDTO applicant;
-
 }

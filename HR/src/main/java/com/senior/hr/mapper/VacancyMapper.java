@@ -11,7 +11,6 @@ public class VacancyMapper {
         Vacancy vacancy = new Vacancy();
         vacancy.setJobDescription(vacancyDTO.getJobDescription());
         vacancy.setYearsOfExperience(vacancyDTO.getYearsOfExperience());
-        vacancy.setJobTitle(JobTitleEnum.valueOf(vacancyDTO.getJobTitle()));
         vacancy.setJobSalary(vacancyDTO.getJobSalary());
         return vacancy;
     }

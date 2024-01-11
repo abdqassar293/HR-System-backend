@@ -10,4 +10,6 @@ public interface ApplicantService {
     void deleteApplicantById(Long id);
 
     List<ApplicantDTO> findAllApplicant();
+
+
 }

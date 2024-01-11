@@ -16,8 +16,6 @@ public class Vacancy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Enumerated(EnumType.STRING)
-    private JobTitleEnum jobTitle;
     private Integer yearsOfExperience;
     private Double jobSalary;
     @Column(name = "job_description")
@@ -25,5 +23,8 @@ public class Vacancy {
     private String jobDescription;
     @OneToMany(mappedBy = "vacancy", orphanRemoval = true)
     private List<Application> applications = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "position_id")
+    private Position jobTitle;
 
 }

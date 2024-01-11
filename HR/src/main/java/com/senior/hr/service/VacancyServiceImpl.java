@@ -2,6 +2,8 @@ package com.senior.hr.service;
 
 import com.senior.hr.DTO.VacancyDTO;
 import com.senior.hr.mapper.VacancyMapper;
+import com.senior.hr.model.Vacancy;
+import com.senior.hr.repository.PositionRepository;
 import com.senior.hr.repository.VacancyRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,10 +16,13 @@ import java.util.stream.Collectors;
 public class VacancyServiceImpl implements VacancyService {
     private final VacancyRepository vacancyRepository;
     private final VacancyMapper vacancyMapper;
+    private final PositionRepository positionRepository;
 
     @Override
     public void addVacancy(VacancyDTO vacancyDTO) {
-        vacancyRepository.save(vacancyMapper.vacancyDTOToVacancy(vacancyDTO));
+        Vacancy vacancy = vacancyMapper.vacancyDTOToVacancy(vacancyDTO);
+        vacancy.setJobTitle(positionRepository.findByPositionName(vacancyDTO.getJobTitle()).orElseThrow());
+        vacancyRepository.save(vacancy);
     }
 
     @Override
