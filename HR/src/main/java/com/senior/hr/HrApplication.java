@@ -147,19 +147,25 @@ class BootStrap implements CommandLineRunner {
         vacancy1.setJobTitle(position);
         vacancyRepository.save(vacancy1);
         Application application = new Application();
-        application.setPreviousProjects(List.of(previousProject, previousProject1));
+        application.setPreviousProjects(List.of(previousProject1));
         application.setApplicationDate(Date.valueOf(LocalDate.now()));
         application.setMotivationLetter("hi asjbfjasbdiuf hsafdjonbasdjfhisadf hfiashdfoiuashdfiohsad hsoifhasiodhfoisahdfoi hsaoifhsaio hoisahfio ashfiohsaoifh saiofhisaohf iosahfoi sahdifoh asiodfhoias hfioash iofhdfiohsaiodfhsaiodfh aisohf oiasdhfiosadhf iohsdf ioashfioh asoifhosaifh oiashf iosadhfioash fiohasfio hsaoif hsioafh iosahfioash fiohas iofhasio fhiosafhsio hasio fhasoifh iosafhoifh ");
         application.setApplicant(applicant);
         application.setVacancy(vacancy);
+        application.setQualifiedForInterview(false);
+        application.setEnglishLevel("A1");
+        application.setProgrammingLanguage("java");
         applicationRepository.save(application);
         Application application1 = new Application();
-        application1.setPreviousProjects(List.of(previousProject2));
+        application1.setPreviousProjects(List.of(previousProject));
         application1.setApplicationDate(Date.valueOf(LocalDate.now()));
         application1.setMotivationLetter("hi asjbfjasbdiuf hsafdjonbasdjfhisadf hfiashdfoiuashdfiohsad hsoifhasiodhfoisahdfoi hsaoifhsaio hoisahfio ashfiohsaoifh saiofhisaohf iosahfoi sahdifoh asiodfhoias hfioash iofhdfiohsaiodfhsaiodfh aisohf oiasdhfiosadhf iohsdf ioashfioh asoifhosaifh oiashf iosadhfioash fiohasfio hsaoif hsioafh iosahfioash fiohas iofhasio fhiosafhsio hasio fhasoifh iosafhoifh ");
         application1.setApplicant(applicant);
         application1.setVacancy(vacancy);
-        //application1.setQualifiedForInterview(true);
+        application1.setQualifiedForInterview(false);
+        application1.setEnglishLevel("A1");
+        application1.setProgrammingLanguage("java");
+        applicationRepository.save(application1);
         Vacation vacation = new Vacation();
         vacation.setNumberOfDays(2);
         vacation.setStartDate(Date.valueOf("2024-01-07"));
@@ -176,6 +182,5 @@ class BootStrap implements CommandLineRunner {
         vacation1.setEmployee(employee);
         vacation1.setApproved(true);
         vacationRepository.save(vacation1);
-        applicationRepository.save(application1);
     }
 }
