@@ -105,6 +105,10 @@ class BootStrap implements CommandLineRunner {
         warningType.setName("Late");
         warningType.setMark(1);
         warningTypeRepository.save(warningType);
+        WarningType warningType1 = new WarningType();
+        warningType1.setName("absentee");
+        warningType1.setMark(1);
+        warningTypeRepository.save(warningType1);
         Employee employee = new Employee();
         employee.setUsername("abd2");
         employee.setPassword(passwordEncoder.encode("1234"));

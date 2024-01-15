@@ -1,7 +1,6 @@
 package com.senior.hr.mapper;
 
 import com.senior.hr.DTO.VacancyDTO;
-import com.senior.hr.model.JobTitleEnum;
 import com.senior.hr.model.Vacancy;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,7 @@ public class VacancyMapper {
         vacancyDTO.setYearsOfExperience(vacancy.getYearsOfExperience());
         vacancyDTO.setJobSalary(vacancy.getJobSalary());
         vacancyDTO.setJobDescription(vacancy.getJobDescription());
-        vacancyDTO.setJobTitle(vacancy.getJobTitle().toString());
+        vacancyDTO.setJobTitle(vacancy.getJobTitle().getPositionName());
         return vacancyDTO;
     }
 }

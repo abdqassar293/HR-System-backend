@@ -10,4 +10,6 @@ public interface VacancyService {
     void deleteVacancy(Long vacancyId);
 
     List<VacancyDTO> findAllVacancies();
+
+    VacancyDTO findVacancyById(Long vacancyId);
 }

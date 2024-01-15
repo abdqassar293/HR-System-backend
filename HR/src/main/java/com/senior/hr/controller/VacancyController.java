@@ -30,4 +30,9 @@ public class VacancyController {
     public void deleteVacancy(@RequestParam String vacancyID) {
         vacancyService.deleteVacancy(Long.valueOf(vacancyID));
     }
+
+    @GetMapping("getVacancyById")
+    public VacancyDTO findVacancyById(@RequestParam String vacancyID) {
+        return vacancyService.findVacancyById(Long.valueOf(vacancyID));
+    }
 }

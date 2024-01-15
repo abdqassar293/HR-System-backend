@@ -34,4 +34,10 @@ public class VacancyServiceImpl implements VacancyService {
     public List<VacancyDTO> findAllVacancies() {
         return vacancyRepository.findAll().stream().map(vacancyMapper::vacancyToVacancyDTO).collect(Collectors.toList());
     }
+
+    @Override
+    public VacancyDTO findVacancyById(Long vacancyId) {
+        //Todo add exception handling
+        return vacancyMapper.vacancyToVacancyDTO(vacancyRepository.findById(vacancyId).orElseThrow());
+    }
 }
