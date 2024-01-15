@@ -40,10 +40,14 @@ class BootStrap implements CommandLineRunner {
     private final WarningTypeRepository warningTypeRepository;
     private final WarningRepository warningRepository;
     private final VacationRepository vacationRepository;
+    private final UserEntityRepository userEntityRepository;
 
     @Transactional
     @Override
     public void run(String... args) throws Exception {
+        Role hrRole = new Role();
+        hrRole.setRoleName("HR");
+        roleRepository.save(hrRole);
         Role applicantRole = new Role();
         applicantRole.setRoleName("Applicant");
         roleRepository.save(applicantRole);
@@ -53,11 +57,27 @@ class BootStrap implements CommandLineRunner {
         Role managerRole = new Role();
         managerRole.setRoleName("Manager");
         roleRepository.save(managerRole);
+        UserEntity userEntity = new UserEntity();
+        userEntity.setUsername("hr");
+        userEntity.setPassword(passwordEncoder.encode("1234"));
+        userEntity.setRole(hrRole);
+        userEntityRepository.save(userEntity);
         Applicant applicant = new Applicant();
         applicant.setUsername("abd1");
         applicant.setPassword(passwordEncoder.encode("1234"));
         applicant.setRole(applicantRole);
         applicant.setDateOfBirth(new Date(100, 12, 5));
+        applicant.setPrevCompany("sdfsdf");
+        applicant.setFatherName("dsfs");
+        applicant.setFirstName("sdfsdf");
+        applicant.setLastName("dsf");
+        applicant.setMotherName("sdafas");
+        applicant.setDegree("sadfsadf");
+        applicant.setPrevCompany("sdfsdf");
+        applicant.setPlaceOfBirth("sdfsdf");
+        applicant.setResidence("sdfsdf");
+        applicant.setNumber("0932323");
+        applicant.setSsn("90327470");
         applicantRepository.save(applicant);
         Position position = new Position();
         position.setPositionName("juniorDev");
@@ -75,6 +95,12 @@ class BootStrap implements CommandLineRunner {
         manager.setRole(managerRole);
         manager.setBenefits(List.of(benefit, benefit1));
         managerRepository.save(manager);
+        Manager manager1 = new Manager();
+        manager1.setUsername("abdma");
+        manager1.setPassword(passwordEncoder.encode("1234"));
+        manager1.setRole(managerRole);
+        manager1.setBenefits(List.of(benefit, benefit1));
+        managerRepository.save(manager1);
         WarningType warningType = new WarningType();
         warningType.setName("Late");
         warningType.setMark(1);

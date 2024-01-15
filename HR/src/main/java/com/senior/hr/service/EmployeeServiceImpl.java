@@ -3,6 +3,7 @@ package com.senior.hr.service;
 import com.senior.hr.DTO.EmployeeDTO;
 import com.senior.hr.mapper.EmployeeMapper;
 import com.senior.hr.repository.EmployeeRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,5 +19,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeDTO> findAllEmployee() {
         return employeeRepository.findAll().stream().map(employeeMapper::employeeToEmployeeDTO).collect(Collectors.toList());
+    }
+
+    @Transactional
+    @Override
+    public void deleteEmployeeByUsername(String username) {
+        employeeRepository.deleteByUsername(username);
+    }
+
+    @Override
+    public EmployeeDTO editEmployeeInfo(EmployeeDTO employeeDTO) {
+        return null;
     }
 }

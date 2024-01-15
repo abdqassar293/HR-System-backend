@@ -33,6 +33,10 @@ public class Employee extends UserEntity {
             inverseJoinColumns = @JoinColumn(name = "benefits_id"))
     private List<Benefit> benefits = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "employee_id")
+    private List<Vacation> vacations = new ArrayList<>();
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

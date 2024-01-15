@@ -45,5 +45,10 @@ public class ApplicantServiceImpl implements ApplicantService {
         return applicantRepository.findAll().stream().map(applicantMapper::applicantToApplicantDTO).collect(Collectors.toList());
     }
 
-
+    @Override
+    public ApplicantDTO findApplicantById(Long applicantId) {
+        //Todo add exception handling
+        Applicant applicant = applicantRepository.findById(applicantId).orElseThrow();
+        return applicantMapper.applicantToApplicantDTO(applicant);
+    }
 }

@@ -26,6 +26,11 @@ public class ApplicantController {
         applicantService.deleteApplicantById(Long.valueOf(applicantID));
     }
 
+    @GetMapping("findById")
+    public ApplicantDTO findApplicantById(@RequestParam String applicantID) {
+        return applicantService.findApplicantById(Long.valueOf(applicantID));
+    }
+
     @GetMapping("listAll")
     public List<ApplicantDTO> listAllApplicants() {
         return applicantService.findAllApplicant();

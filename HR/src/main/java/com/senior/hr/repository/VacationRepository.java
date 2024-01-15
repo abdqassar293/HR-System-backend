@@ -12,4 +12,6 @@ public interface VacationRepository extends JpaRepository<Vacation, Long> {
     List<Vacation> findAllByApprovedIsFalse();
 
     List<Vacation> findAllByEmployee(Employee employee);
+
+    void deleteByEmployee(Employee employee);
 }

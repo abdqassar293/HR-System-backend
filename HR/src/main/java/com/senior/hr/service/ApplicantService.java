@@ -11,5 +11,5 @@ public interface ApplicantService {
 
     List<ApplicantDTO> findAllApplicant();
 
-
+    ApplicantDTO findApplicantById(Long applicantId);
 }

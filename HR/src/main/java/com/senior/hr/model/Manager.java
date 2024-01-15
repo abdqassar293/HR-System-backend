@@ -15,7 +15,7 @@ public class Manager extends UserEntity {
     private Double salary;
     @OneToMany(mappedBy = "manager", orphanRemoval = true)
     private List<Employee> employees = new ArrayList<>();
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(name = "manager_benefits",
             joinColumns = @JoinColumn(name = "manager_id"),
             inverseJoinColumns = @JoinColumn(name = "benefits_id"))
