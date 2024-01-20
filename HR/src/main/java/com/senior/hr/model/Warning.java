@@ -15,7 +15,7 @@ public class Warning {
     private Long id;
 
     private String description;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "warning_type_id")
     private WarningType warningType;
 

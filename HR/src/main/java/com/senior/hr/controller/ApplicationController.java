@@ -1,9 +1,6 @@
 package com.senior.hr.controller;
 
-import com.senior.hr.DTO.ApplicationDTO;
-import com.senior.hr.DTO.HireRequestDTO;
-import com.senior.hr.DTO.QualifyApplicationRequestDTO;
-import com.senior.hr.DTO.QualifyApplicationResponseDTO;
+import com.senior.hr.DTO.*;
 import com.senior.hr.service.ApplicationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +42,7 @@ public class ApplicationController {
     }
 
     @GetMapping("interviews")
-    public List<ApplicationDTO> listInterviews() {
+    public List<InterviewResponseDTO> listInterviews() {
         return applicationService.findAllInterviews();
     }
 

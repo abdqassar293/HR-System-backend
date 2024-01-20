@@ -66,8 +66,8 @@ public class WarningServiceImpl implements WarningService {
     public void deleteWarningType(String warningTypeName) {
         //Todo add exception handling
         WarningType warningType = warningTypeRepository.findByName(warningTypeName).orElseThrow();
-        warningRepository.deleteWarningByWarningType(warningType);
-        //warningTypeRepository.deleteByName(warningTypeName);
+        //warningRepository.deleteWarningByWarningType(warningType);
+        warningTypeRepository.deleteByName(warningTypeName);
     }
 
     @Override

@@ -82,6 +82,9 @@ class BootStrap implements CommandLineRunner {
         Position position = new Position();
         position.setPositionName("juniorDev");
         positionRepository.save(position);
+        Position position1 = new Position();
+        position1.setPositionName("SeniorDev");
+        positionRepository.save(position1);
         Benefit benefit = new Benefit();
         benefit.setName("Transportation");
         benefit.setCutPercentage(2.3);

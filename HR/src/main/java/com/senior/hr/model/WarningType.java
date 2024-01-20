@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -15,4 +18,9 @@ public class WarningType {
     private Long id;
     private String name;
     private Integer mark;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "warning_type_id")
+    private List<Warning> warnings = new ArrayList<>();
+
 }

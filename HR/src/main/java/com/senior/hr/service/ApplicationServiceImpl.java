@@ -1,9 +1,6 @@
 package com.senior.hr.service;
 
-import com.senior.hr.DTO.ApplicationDTO;
-import com.senior.hr.DTO.HireRequestDTO;
-import com.senior.hr.DTO.QualifyApplicationRequestDTO;
-import com.senior.hr.DTO.QualifyApplicationResponseDTO;
+import com.senior.hr.DTO.*;
 import com.senior.hr.mapper.ApplicationMapper;
 import com.senior.hr.model.*;
 import com.senior.hr.repository.*;
@@ -86,8 +83,14 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     @Transactional
-    public List<ApplicationDTO> findAllInterviews() {
-        return applicationRepository.findAllByQualifiedForInterviewIsTrue().stream().map(applicationMapper::applicationToApplicationDTO).collect(Collectors.toList());
+    public List<InterviewResponseDTO> findAllInterviews() {
+        return applicationRepository.findAllByQualifiedForInterviewIsTrue().stream().map(application -> {
+            InterviewResponseDTO interviewResponseDTO = new InterviewResponseDTO();
+            interviewResponseDTO.setDate(application.getInterviewDate().toString());
+            interviewResponseDTO.setApplicantUsername(application.getApplicant().getUsername());
+            interviewResponseDTO.setVacancyName(application.getVacancy().getJobTitle().getPositionName());
+            return interviewResponseDTO;
+        }).collect(Collectors.toList());
     }
 
     @Transactional
