@@ -3,6 +3,7 @@ package com.senior.hr.service;
 import com.senior.hr.DTO.AddEmployeeToManagerRequest;
 import com.senior.hr.DTO.EmployeeDTO;
 import com.senior.hr.DTO.ManagerDTO;
+import com.senior.hr.DTO.ManagerResponseDTO;
 import com.senior.hr.mapper.EmployeeMapper;
 import com.senior.hr.mapper.ManagerMapper;
 import com.senior.hr.model.*;
@@ -29,8 +30,14 @@ public class ManagerServiceImpl implements ManagerService {
     private final BenefitRepository benefitRepository;
 
     @Override
-    public List<ManagerDTO> listAllManagers() {
-        return managerRepository.findAll().stream().map(managerMapper::managerToManagerDTO).collect(Collectors.toList());
+    public List<ManagerResponseDTO> listAllManagers() {
+        return managerRepository.findAll().stream().map(manager -> {
+            ManagerResponseDTO managerResponseDTO = new ManagerResponseDTO();
+            managerResponseDTO.setManagerFirstName(manager.getFirstName());
+            managerResponseDTO.setManagerLastName(managerResponseDTO.getManagerLastName());
+            managerResponseDTO.setMangerUsername(managerResponseDTO.getMangerUsername());
+            return managerResponseDTO;
+        }).collect(Collectors.toList());
     }
 
     @Transactional

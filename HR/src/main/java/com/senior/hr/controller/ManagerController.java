@@ -3,6 +3,7 @@ package com.senior.hr.controller;
 import com.senior.hr.DTO.AddEmployeeToManagerRequest;
 import com.senior.hr.DTO.EmployeeDTO;
 import com.senior.hr.DTO.ManagerDTO;
+import com.senior.hr.DTO.ManagerResponseDTO;
 import com.senior.hr.service.ManagerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ public class ManagerController {
     private final ManagerService managerService;
 
     @GetMapping("listAll")
-    public List<ManagerDTO> listAllApplicants() {
+    public List<ManagerResponseDTO> listAllApplicants() {
         return managerService.listAllManagers();
     }
 
