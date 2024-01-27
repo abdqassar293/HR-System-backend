@@ -18,6 +18,7 @@ public class ManagerMapper {
         manager.setNumber(managerDTO.getNumber());
         manager.setFatherName(managerDTO.getFatherName());
         manager.setResidence(managerDTO.getResidence());
+        manager.setContractNumber(managerDTO.getContractNumber());
         manager.setSsn(managerDTO.getSsn());
         if (manager.getDateOfBirth() != null) {
             manager.setDateOfBirth(Date.valueOf(managerDTO.getDateOfBirth()));
@@ -32,10 +33,14 @@ public class ManagerMapper {
         managerDTO.setUsername(manager.getUsername());
         managerDTO.setFirstName(manager.getFirstName());
         managerDTO.setLastName(manager.getLastName());
+        managerDTO.setFatherName(manager.getFatherName());
+        managerDTO.setMotherName(manager.getMotherName());
         managerDTO.setSsn(manager.getSsn());
         managerDTO.setPlaceOfBirth(manager.getPlaceOfBirth());
         managerDTO.setDegree(manager.getDegree());
+        managerDTO.setContractNumber(manager.getContractNumber());
         managerDTO.setNumber(manager.getNumber());
+        managerDTO.setSalary(manager.getSalary());
         Date date = manager.getDateOfBirth();
         if (date != null) {
             managerDTO.setDateOfBirth(date.toString());

@@ -1,6 +1,7 @@
 package com.senior.hr.mapper;
 
 import com.senior.hr.DTO.EmployeeDTO;
+import com.senior.hr.DTO.ManagerResponseDTO;
 import com.senior.hr.model.Employee;
 import com.senior.hr.model.Warning;
 import lombok.AllArgsConstructor;
@@ -33,8 +34,8 @@ public class EmployeeMapper {
             employee.setDateOfBirth(Date.valueOf(employeeDTO.getDateOfBirth()));
         }
         employee.setMotherName(employeeDTO.getMotherName());
-        employee.setPosition(positionMapper.positionDTOToPosition(employeeDTO.getPosition()));
-        employee.setManager(managerMapper.managerDTOToManager(employeeDTO.getManagerDTO()));
+        //employee.setPosition(positionMapper.positionDTOToPosition(employeeDTO.getPosition()));
+        //employee.setManager(managerMapper.managerDTOToManager(employeeDTO.getManagerDTO()));
         employee.setBenefits(employeeDTO.getBenefits().stream().map(benefitMapper::benefitDTOToBenefit).collect(Collectors.toList()));
         return employee;
     }
@@ -44,6 +45,8 @@ public class EmployeeMapper {
         employeeDTO.setId(employee.getId());
         employeeDTO.setUsername(employee.getUsername());
         employeeDTO.setFirstName(employee.getFirstName());
+        employeeDTO.setFatherName(employee.getFatherName());
+        employeeDTO.setMotherName(employee.getMotherName());
         employeeDTO.setLastName(employee.getLastName());
         employeeDTO.setSsn(employee.getSsn());
         employeeDTO.setPlaceOfBirth(employee.getPlaceOfBirth());
@@ -55,8 +58,13 @@ public class EmployeeMapper {
             employeeDTO.setDateOfBirth(date.toString());
         }
         employeeDTO.setResidence(employee.getResidence());
-        employeeDTO.setPosition(positionMapper.positionToPositionDTO(employee.getPosition()));
-        employeeDTO.setManagerDTO(managerMapper.managerToManagerDTO(employee.getManager()));
+        employeeDTO.setPosition(employee.getPosition().getPositionName());
+        ManagerResponseDTO managerResponseDTO = new ManagerResponseDTO();
+        managerResponseDTO.setMangerUsername(employee.getManager().getUsername());
+        managerResponseDTO.setManagerFirstName(employee.getManager().getFirstName());
+        managerResponseDTO.setManagerLastName(employee.getManager().getLastName());
+        employeeDTO.setContractNumber("A234234");
+        employeeDTO.setManagerDTO(managerResponseDTO);
         employeeDTO.setBenefits(employee.getBenefits().stream().map(benefitMapper::benefitToBenefitDTO).collect(Collectors.toList()));
         employeeDTO.setWarnings(employee.getWarnings().stream().map(warningMapper::warningToWarningDTO).collect(Collectors.toList()));
         return employeeDTO;

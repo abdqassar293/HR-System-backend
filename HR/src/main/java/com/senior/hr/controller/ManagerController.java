@@ -1,9 +1,6 @@
 package com.senior.hr.controller;
 
-import com.senior.hr.DTO.AddEmployeeToManagerRequest;
-import com.senior.hr.DTO.EmployeeDTO;
-import com.senior.hr.DTO.ManagerDTO;
-import com.senior.hr.DTO.ManagerResponseDTO;
+import com.senior.hr.DTO.*;
 import com.senior.hr.service.ManagerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,8 +27,8 @@ public class ManagerController {
     }
 
     @PostMapping("makeManager")
-    public ManagerDTO makeManager(@RequestParam String employeeUsername) {
-        return managerService.makaManager(employeeUsername);
+    public ManagerDTO makeManager(@RequestBody MakeManagerRequestDTO makeManagerRequestDTO) {
+        return managerService.makaManager(makeManagerRequestDTO);
     }
 
     @PostMapping("addEmployeeToManager")

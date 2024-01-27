@@ -13,6 +13,7 @@ import java.util.List;
 @DiscriminatorValue("3")
 public class Manager extends UserEntity {
     private Double salary;
+    private String contractNumber;
     @OneToMany(mappedBy = "manager", orphanRemoval = true)
     private List<Employee> employees = new ArrayList<>();
     @ManyToMany()

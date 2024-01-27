@@ -102,6 +102,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Applicant applicant = applicantRepository.findByUsername(application.getApplicant().getUsername()).orElseThrow();
         applicantRepository.deleteById(applicant.getId());
         Employee employee = new Employee();
+        employee.setContractNumber(hireRequestDTO.getContractNumber());
         employee.setUsername(applicant.getUsername());
         employee.setPassword(applicant.getPassword());
         employee.setFirstName(applicant.getFirstName());
@@ -116,7 +117,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         employee.setPlaceOfBirth(applicant.getPlaceOfBirth());
         employee.setDateOfBirth(applicant.getDateOfBirth());
         List<Benefit> benefits = benefitRepository.findAll();
-        employee.setSalary(application.getVacancy().getJobSalary());
+        employee.setSalary(hireRequestDTO.getSalary());
         employee.setBenefits(List.of(benefits.get(0), benefits.get(1)));
         employee.setPosition(positionRepository.findByPositionName(application.getVacancy().getJobTitle().getPositionName()).orElseThrow());
         employee.setManager(managerRepository.findByUsername(hireRequestDTO.getManagerUsername()).orElseThrow());

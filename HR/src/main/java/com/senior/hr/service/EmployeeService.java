@@ -10,4 +10,6 @@ public interface EmployeeService {
     void deleteEmployeeByUsername(String username);
 
     EmployeeDTO editEmployeeInfo(EmployeeDTO employeeDTO);
+
+    EmployeeDTO findEmployeeByUsername(String username);
 }

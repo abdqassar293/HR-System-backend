@@ -18,5 +18,5 @@ public class ManagerDTO {
     private String number;
     private String residence;
     private Double salary;
-
+    private String contractNumber;
 }

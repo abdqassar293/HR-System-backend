@@ -1,9 +1,6 @@
 package com.senior.hr.service;
 
-import com.senior.hr.DTO.AddEmployeeToManagerRequest;
-import com.senior.hr.DTO.EmployeeDTO;
-import com.senior.hr.DTO.ManagerDTO;
-import com.senior.hr.DTO.ManagerResponseDTO;
+import com.senior.hr.DTO.*;
 
 import java.util.List;
 
@@ -12,7 +9,7 @@ public interface ManagerService {
 
     void deleteManagerByUsername(String username);
 
-    ManagerDTO makaManager(String employeeUserName);
+    ManagerDTO makaManager(MakeManagerRequestDTO makeManagerRequestDTO);
 
     void addEmployeeToManager(AddEmployeeToManagerRequest addEmployeeToManagerRequest);
 

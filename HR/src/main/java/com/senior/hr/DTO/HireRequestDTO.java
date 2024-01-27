@@ -6,4 +6,7 @@ import lombok.Data;
 public class HireRequestDTO {
     private Long applicationId;
     private String managerUsername;
+    private Double salary;
+    private String contractNumber;
+
 }

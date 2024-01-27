@@ -1,9 +1,6 @@
 package com.senior.hr.service;
 
-import com.senior.hr.DTO.AddEmployeeToManagerRequest;
-import com.senior.hr.DTO.EmployeeDTO;
-import com.senior.hr.DTO.ManagerDTO;
-import com.senior.hr.DTO.ManagerResponseDTO;
+import com.senior.hr.DTO.*;
 import com.senior.hr.mapper.EmployeeMapper;
 import com.senior.hr.mapper.ManagerMapper;
 import com.senior.hr.model.*;
@@ -34,8 +31,8 @@ public class ManagerServiceImpl implements ManagerService {
         return managerRepository.findAll().stream().map(manager -> {
             ManagerResponseDTO managerResponseDTO = new ManagerResponseDTO();
             managerResponseDTO.setManagerFirstName(manager.getFirstName());
-            managerResponseDTO.setManagerLastName(managerResponseDTO.getManagerLastName());
-            managerResponseDTO.setMangerUsername(managerResponseDTO.getMangerUsername());
+            managerResponseDTO.setManagerLastName(manager.getLastName());
+            managerResponseDTO.setMangerUsername(manager.getUsername());
             return managerResponseDTO;
         }).collect(Collectors.toList());
     }
@@ -48,13 +45,14 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Transactional
     @Override
-    public ManagerDTO makaManager(String employeeUserName) {
+    public ManagerDTO makaManager(MakeManagerRequestDTO makeManagerRequestDTO) {
         //Todo add exception handling
-        Employee employee = employeeRepository.findByUsername(employeeUserName).orElseThrow();
+        Employee employee = employeeRepository.findByUsername(makeManagerRequestDTO.getEmployeeUsername()).orElseThrow();
         vacationRepository.deleteByEmployee(employee);
         warningRepository.deleteByEmployee(employee);
-        employeeRepository.deleteById(employee.getId());
+        employeeRepository.delete(employee);
         Manager manager = new Manager();
+        manager.setContractNumber(makeManagerRequestDTO.getNewContractNumber());
         manager.setUsername(employee.getUsername());
         manager.setPassword(employee.getPassword());
         manager.setFirstName(employee.getFirstName());
@@ -69,9 +67,10 @@ public class ManagerServiceImpl implements ManagerService {
         manager.setPlaceOfBirth(employee.getPlaceOfBirth());
         manager.setDateOfBirth(employee.getDateOfBirth());
         List<Benefit> benefits = benefitRepository.findAll();
-        manager.setSalary(employee.getSalary());
+        manager.setSalary(makeManagerRequestDTO.getNewSalary());
         manager.setBenefits(List.of(benefits.get(0), benefits.get(1)));
-        return managerMapper.managerToManagerDTO(managerRepository.save(manager));
+        Manager savedManager = managerRepository.save(manager);
+        return managerMapper.managerToManagerDTO(savedManager);
     }
 
     @Override

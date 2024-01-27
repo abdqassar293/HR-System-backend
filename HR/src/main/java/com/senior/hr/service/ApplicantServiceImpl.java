@@ -46,9 +46,9 @@ public class ApplicantServiceImpl implements ApplicantService {
     }
 
     @Override
-    public ApplicantDTO findApplicantById(Long applicantId) {
+    public ApplicantDTO findApplicantByUsername(String username) {
         //Todo add exception handling
-        Applicant applicant = applicantRepository.findById(applicantId).orElseThrow();
+        Applicant applicant = applicantRepository.findByUsername(username).orElseThrow();
         return applicantMapper.applicantToApplicantDTO(applicant);
     }
 }

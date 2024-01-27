@@ -31,4 +31,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDTO editEmployeeInfo(EmployeeDTO employeeDTO) {
         return null;
     }
+
+    @Override
+    public EmployeeDTO findEmployeeByUsername(String username) {
+        //Todo exception handling
+        return employeeMapper.employeeToEmployeeDTO(employeeRepository.findByUsername(username).orElseThrow());
+    }
+
+
 }

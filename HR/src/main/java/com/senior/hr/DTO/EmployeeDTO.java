@@ -21,9 +21,10 @@ public class EmployeeDTO {
     private String dateOfBirth;
     private String number;
     private String residence;
-    private PositionDTO position;
+    private String position;
     private Double salary;
-    private ManagerDTO managerDTO;
+    private String contractNumber;
+    private ManagerResponseDTO managerDTO;
     private List<BenefitDTO> benefits = new ArrayList<>();
     private List<WarningDTO> warnings = new ArrayList<>();
 }
