@@ -4,9 +4,12 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.senior.hr.DTO.AttendanceCSVDTO;
 import com.senior.hr.DTO.EmployeeDTO;
+import com.senior.hr.DTO.RegisterResponseDTO;
 import com.senior.hr.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,9 +39,11 @@ public class EmployeeController {
     }
 
     @PostMapping("/uploadAttendance")
-    public String uploadFile(@RequestParam("attendance") MultipartFile file) {
+    public ResponseEntity<RegisterResponseDTO> uploadFile(@RequestParam("attendance") MultipartFile file) {
         if (file.isEmpty()) {
-            return "No file is present";
+            RegisterResponseDTO registerResponseDTO = new RegisterResponseDTO();
+            registerResponseDTO.setMessage("no file is present");
+            return new ResponseEntity<>(registerResponseDTO, HttpStatus.OK);
         }
         try {
             InputStream inputStream = file.getInputStream();
@@ -50,9 +55,13 @@ public class EmployeeController {
             List<AttendanceCSVDTO> attendance = csvToBean.parse();
             log.error(attendance.toString());
             employeeService.addAttendance(attendance);
-            return "File upload successful";
+            RegisterResponseDTO registerResponseDTO = new RegisterResponseDTO();
+            registerResponseDTO.setMessage("file uploaded");
+            return new ResponseEntity<>(registerResponseDTO, HttpStatus.OK);
         } catch (IOException e) {
-            return "File upload failed";
+            RegisterResponseDTO registerResponseDTO = new RegisterResponseDTO();
+            registerResponseDTO.setMessage("file uploaded field");
+            return new ResponseEntity<>(registerResponseDTO, HttpStatus.OK);
         }
     }
 
