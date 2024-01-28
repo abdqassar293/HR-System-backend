@@ -1,9 +1,13 @@
 package com.senior.hr.controller;
 
 import com.senior.hr.DTO.ApplicantDTO;
+import com.senior.hr.DTO.RegisterResponseDTO;
+import com.senior.hr.repository.UserEntityRepository;
 import com.senior.hr.service.ApplicantService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,10 +19,19 @@ import java.util.List;
 @AllArgsConstructor
 public class ApplicantController {
     private final ApplicantService applicantService;
-
+    private final UserEntityRepository userEntityRepository;
     @PostMapping("addNewApplicant")
-    public void addNewApplicant(@RequestBody ApplicantDTO applicantDTO) {
-        applicantService.addApplicant(applicantDTO);
+    public ResponseEntity<RegisterResponseDTO> addNewApplicant(@RequestBody ApplicantDTO applicantDTO) {
+        if (userEntityRepository.existsByUsername(applicantDTO.getUsername())) {
+            RegisterResponseDTO registerResponseDTO = new RegisterResponseDTO();
+            registerResponseDTO.setMessage("username is taken");
+            return new ResponseEntity<>(registerResponseDTO, HttpStatus.BAD_REQUEST);
+        } else {
+            applicantService.addApplicant(applicantDTO);
+            RegisterResponseDTO registerResponseDTO = new RegisterResponseDTO();
+            registerResponseDTO.setMessage("registered successfully");
+            return new ResponseEntity<>(registerResponseDTO, HttpStatus.OK);
+        }
     }
 
     @DeleteMapping("deleteApplicant")
