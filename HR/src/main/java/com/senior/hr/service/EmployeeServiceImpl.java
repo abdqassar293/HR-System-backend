@@ -2,16 +2,23 @@ package com.senior.hr.service;
 
 import com.senior.hr.DTO.AttendanceCSVDTO;
 import com.senior.hr.DTO.EmployeeDTO;
+import com.senior.hr.DTO.SalaryCalculationRequestForOneEmployeeRequestDTO;
+import com.senior.hr.DTO.SalaryCalculationResponseForOneEmployeeDTO;
 import com.senior.hr.mapper.EmployeeMapper;
 import com.senior.hr.model.Attendance;
 import com.senior.hr.model.Employee;
+import com.senior.hr.model.RealSalary;
+import com.senior.hr.model.Vacation;
 import com.senior.hr.repository.AttendanceRepository;
 import com.senior.hr.repository.EmployeeRepository;
+import com.senior.hr.repository.RealSalaryRepository;
+import com.senior.hr.repository.VacationRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +27,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeMapper employeeMapper;
     private final EmployeeRepository employeeRepository;
     private final AttendanceRepository attendanceRepository;
+    private final RealSalaryRepository realSalaryRepository;
+    private final VacationRepository vacationRepository;
 
     @Override
     public List<EmployeeDTO> findAllEmployee() {
@@ -73,6 +82,38 @@ public class EmployeeServiceImpl implements EmployeeService {
             attendanceCSVDTO.setDeparture(attendance.getDeparture());
             return attendanceCSVDTO;
         }).toList();
+    }
+
+    @Override
+    public SalaryCalculationResponseForOneEmployeeDTO calculateSalary(SalaryCalculationRequestForOneEmployeeRequestDTO request) {
+        Employee employee = employeeRepository.findByUsername(request.getEmployeeUsername()).orElseThrow();
+        Double hourSalary = employee.getSalary() / (22 * 9);
+        List<Attendance> attendanceList = attendanceRepository.findAttendanceByEmployeeAndMonthAndYear(employee, request.getMonth(), request.getYear());
+        AtomicReference<Double> hourSum = new AtomicReference<>(0.0);
+        attendanceList.forEach(attendance -> {
+            Double hourInDay = attendance.getDeparture() - attendance.getArrival();
+            hourSum.updateAndGet(v -> v + hourInDay);
+        });
+        AtomicReference<Integer> payedVacationSum = new AtomicReference<>(0);
+        List<Vacation> payedVacations = vacationRepository.findByEmployeeAndPayedIsTrueAndApprovedIsTrue(employee);
+        payedVacations.forEach(payedVacation -> {
+            payedVacationSum.updateAndGet(v -> v + payedVacation.getNumberOfDays());
+        });
+        RealSalary realSalary = new RealSalary();
+        realSalary.setBaseSalary(employee.getSalary());
+        realSalary.setEmployee(employee);
+        realSalary.setMonth(request.getMonth());
+        realSalary.setYear(request.getYear());
+        if (payedVacationSum.get() > 0) {
+            hourSum.updateAndGet(v -> v + (payedVacationSum.get() * 9));
+        }
+        realSalary.setRealSalary(hourSalary * hourSum.get());
+        RealSalary savedRealSalary = realSalaryRepository.save(realSalary);
+        SalaryCalculationResponseForOneEmployeeDTO response = new SalaryCalculationResponseForOneEmployeeDTO();
+        response.setEmployeeUsername(savedRealSalary.getEmployee().getUsername());
+        response.setBaseSalary(savedRealSalary.getBaseSalary());
+        response.setRealSalary(savedRealSalary.getRealSalary());
+        return response;
     }
 
 

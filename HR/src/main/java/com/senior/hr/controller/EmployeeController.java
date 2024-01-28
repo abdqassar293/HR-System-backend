@@ -2,9 +2,7 @@ package com.senior.hr.controller;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
-import com.senior.hr.DTO.AttendanceCSVDTO;
-import com.senior.hr.DTO.EmployeeDTO;
-import com.senior.hr.DTO.RegisterResponseDTO;
+import com.senior.hr.DTO.*;
 import com.senior.hr.service.EmployeeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -67,5 +65,10 @@ public class EmployeeController {
     @GetMapping("getAttendanceByMonth")
     public List<AttendanceCSVDTO> getAttendance(@RequestParam String username, @RequestParam String month, @RequestParam String year) {
         return employeeService.findAttendanceByEmployeeAndMonthAndYear(username, Integer.parseInt(month), Integer.parseInt(year));
+    }
+
+    @PostMapping("calculateSalaryThisMonth")
+    public SalaryCalculationResponseForOneEmployeeDTO calculate(@RequestBody SalaryCalculationRequestForOneEmployeeRequestDTO request) {
+        return employeeService.calculateSalary(request);
     }
 }
