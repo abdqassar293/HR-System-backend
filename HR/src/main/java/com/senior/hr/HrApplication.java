@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @SpringBootApplication
 public class HrApplication {
@@ -41,6 +40,7 @@ class BootStrap implements CommandLineRunner {
     private final WarningRepository warningRepository;
     private final VacationRepository vacationRepository;
     private final UserEntityRepository userEntityRepository;
+    private final ReportsRepository reportsRepository;
 
     @Transactional
     @Override
@@ -181,12 +181,14 @@ class BootStrap implements CommandLineRunner {
         vacancy.setYearsOfExperience(3);
         vacancy.setJobDescription("fvsdufusaydfuyadsgfuysdgfuyadsgfuysdgdfyusdgfyusgfyugsf");
         vacancy.setJobTitle(position);
+        vacancy.setJobType(JobTypeEnum.FullTime);
         vacancyRepository.save(vacancy);
         Vacancy vacancy1 = new Vacancy();
         vacancy1.setJobSalary(233.3);
         vacancy1.setYearsOfExperience(5);
         vacancy1.setJobDescription("hiiiiiiiiiiiiiiiiiii");
         vacancy1.setJobTitle(position);
+        vacancy1.setJobType(JobTypeEnum.InternShip);
         vacancyRepository.save(vacancy1);
         Application application = new Application();
         application.setPreviousProjects(List.of(previousProject1));
@@ -224,5 +226,13 @@ class BootStrap implements CommandLineRunner {
         vacation1.setEmployee(employee);
         vacation1.setApproved(true);
         vacationRepository.save(vacation1);
+        Report report = new Report();
+        report.setReport_result(ReportResultEnum.good);
+        report.setRating(5);
+        report.setIssuer(manager1);
+        report.setEmployee(employee);
+        report.setDateIssued(Date.valueOf(LocalDate.now()));
+        report.setReportDescription("ghghdgsjndsijfg idsjfignsodfgnosdfjngiods");
+        reportsRepository.save(report);
     }
 }

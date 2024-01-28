@@ -38,6 +38,9 @@ public class Employee extends UserEntity {
     @JoinColumn(name = "employee_id")
     private List<Vacation> vacations = new ArrayList<>();
 
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Report> reports = new ArrayList<>();
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;

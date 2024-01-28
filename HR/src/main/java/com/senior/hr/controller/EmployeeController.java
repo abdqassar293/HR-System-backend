@@ -53,7 +53,6 @@ public class EmployeeController {
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
             List<AttendanceCSVDTO> attendance = csvToBean.parse();
-            log.error(attendance.toString());
             employeeService.addAttendance(attendance);
             RegisterResponseDTO registerResponseDTO = new RegisterResponseDTO();
             registerResponseDTO.setMessage("file uploaded");
