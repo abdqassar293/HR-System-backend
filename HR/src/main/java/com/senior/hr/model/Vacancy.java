@@ -1,6 +1,7 @@
 package com.senior.hr.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
@@ -26,5 +27,7 @@ public class Vacancy {
     @ManyToOne
     @JoinColumn(name = "position_id")
     private Position jobTitle;
+    @Enumerated(EnumType.STRING)
+    private JobTypeEnum jobType;
 
 }
