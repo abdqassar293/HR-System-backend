@@ -7,6 +7,7 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,5 +49,5 @@ public class Application {
     private Boolean qualifiedForInterview;
 
     @Column(name = "interview_date")
-    private Date interviewDate;
+    private LocalDateTime interviewDate;
 }

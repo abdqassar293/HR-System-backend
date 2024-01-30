@@ -19,6 +19,8 @@ public interface ApplicationService {
 
     List<InterviewResponseDTO> findAllInterviews();
 
+    List<InterviewResponseDTO> findTodaysInterviews();
+
     void HireApplicant(HireRequestDTO hireRequestDTO);
 
 }

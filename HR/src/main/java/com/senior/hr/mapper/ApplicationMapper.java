@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.stream.Collectors;
 
 @Service
@@ -14,14 +17,14 @@ public class ApplicationMapper {
     private final ApplicantMapper applicantMapper;
     private final VacancyMapper vacancyMapper;
     private final PreviousProjectMapper previousProjectMapper;
-
+    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     public Application applicationDTOToApplication(ApplicationDTO applicationDTO) {
         Application application = new Application();
         application.setEnglishLevel(applicationDTO.getEnglishLevel());
         application.setMotivationLetter(applicationDTO.getMotivationLetter());
         application.setProgrammingLanguage(application.getProgrammingLanguage());
         if (applicationDTO.getInterviewDate() != null) {
-            application.setInterviewDate(Date.valueOf(applicationDTO.getInterviewDate()));
+            application.setInterviewDate(LocalDateTime.parse(applicationDTO.getInterviewDate(), dtf));
         }
         application.setQualifiedForInterview(applicationDTO.getQualifiedForInterview());
         application.setPreviousProjects(applicationDTO.getPreviousProjects().stream().map(previousProjectMapper::previousProjectDTOTOPreviousProject).collect(Collectors.toList()));
@@ -38,9 +41,9 @@ public class ApplicationMapper {
             applicationDTO.setApplicationDate(applicationDate.toString());
         }
         applicationDTO.setMotivationLetter(application.getMotivationLetter());
-        Date interviewDate = application.getInterviewDate();
+        LocalDateTime interviewDate = application.getInterviewDate();
         if (interviewDate != null) {
-            applicationDTO.setInterviewDate(interviewDate.toString());
+            applicationDTO.setInterviewDate(interviewDate.format(dtf));
         }
         applicationDTO.setQualifiedForInterview(application.getQualifiedForInterview());
         applicationDTO.setVacancy(vacancyMapper.vacancyToVacancyDTO(application.getVacancy()));

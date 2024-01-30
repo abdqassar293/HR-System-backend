@@ -46,6 +46,11 @@ public class ApplicationController {
         return applicationService.findAllInterviews();
     }
 
+    @GetMapping("interviewsToday")
+    public List<InterviewResponseDTO> listTodayInterviews() {
+        return applicationService.findTodaysInterviews();
+    }
+
     @PostMapping("qualifyApplication")
     public QualifyApplicationResponseDTO qualifyApplication(@RequestBody QualifyApplicationRequestDTO qualifyApplicationRequestDTO) {
         return applicationService.qualifyApplication(qualifyApplicationRequestDTO);

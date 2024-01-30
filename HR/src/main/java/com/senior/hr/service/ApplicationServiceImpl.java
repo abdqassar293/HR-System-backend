@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,13 +73,14 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     public QualifyApplicationResponseDTO qualifyApplication(QualifyApplicationRequestDTO qualifyApplicationRequestDTO) {
         //Todo exception Handling
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         Application application = applicationRepository.findById(Long.valueOf(qualifyApplicationRequestDTO.getApplicationId())).orElseThrow();
-        application.setInterviewDate(Date.valueOf(qualifyApplicationRequestDTO.getInterviewDate()));
+        application.setInterviewDate(LocalDateTime.parse(qualifyApplicationRequestDTO.getInterviewDate(), dtf));
         application.setQualifiedForInterview(true);
         application.setId(Long.valueOf(qualifyApplicationRequestDTO.getApplicationId()));
         application = applicationRepository.save(application);
         QualifyApplicationResponseDTO qualifyApplicationResponseDTO = new QualifyApplicationResponseDTO();
-        qualifyApplicationResponseDTO.setInterviewDate(application.getInterviewDate().toString());
+        qualifyApplicationResponseDTO.setInterviewDate(application.getInterviewDate().format(dtf));
         qualifyApplicationResponseDTO.setMessage("Date reserved");
         return qualifyApplicationResponseDTO;
     }
@@ -84,13 +88,33 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Override
     @Transactional
     public List<InterviewResponseDTO> findAllInterviews() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         return applicationRepository.findAllByQualifiedForInterviewIsTrue().stream().map(application -> {
             InterviewResponseDTO interviewResponseDTO = new InterviewResponseDTO();
-            interviewResponseDTO.setDate(application.getInterviewDate().toString());
+            interviewResponseDTO.setDate(application.getInterviewDate().format(dtf));
             interviewResponseDTO.setApplicantUsername(application.getApplicant().getUsername());
             interviewResponseDTO.setVacancyName(application.getVacancy().getJobTitle().getPositionName());
             return interviewResponseDTO;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public List<InterviewResponseDTO> findTodaysInterviews() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        //LocalDate now=LocalDate.now();
+        LocalDate now = LocalDate.of(2024, 1, 25);
+        List<InterviewResponseDTO> list = new ArrayList<>();
+        applicationRepository.findAllByQualifiedForInterviewIsTrue().forEach(application -> {
+            if (now.isEqual(application.getInterviewDate().toLocalDate())) {
+                InterviewResponseDTO interviewResponseDTO = new InterviewResponseDTO();
+                interviewResponseDTO.setDate(application.getInterviewDate().format(dtf));
+                interviewResponseDTO.setApplicantUsername(application.getApplicant().getUsername());
+                interviewResponseDTO.setVacancyName(application.getVacancy().getJobTitle().getPositionName());
+                list.add(interviewResponseDTO);
+            }
+        });
+        return list;
     }
 
     @Transactional
