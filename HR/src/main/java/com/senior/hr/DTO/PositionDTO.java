@@ -6,4 +6,5 @@ import lombok.Data;
 public class PositionDTO {
     private Long id;
     private String name;
+    private Integer numberOfEmployees;
 }

@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class SalaryCalculationResponseForOneEmployeeDTO {
-    private String employeeUsername;
-    private Double baseSalary;
     private Double realSalary;
+    private Integer month;
 }

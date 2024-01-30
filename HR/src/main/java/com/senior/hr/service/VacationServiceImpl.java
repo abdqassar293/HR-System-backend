@@ -9,6 +9,7 @@ import com.senior.hr.repository.VacationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.YearMonth;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,8 +40,10 @@ public class VacationServiceImpl implements VacationService {
     public VacationDTO addVacationRequest(VacationDTO vacationDTO) {
         Vacation vacation = vacationMapper.vacationDTOToVacation(vacationDTO);
         vacation.setApproved(false);
-        Employee employee = employeeRepository.findByUsername(vacationDTO.getEmployeeDTO().getUsername()).orElseThrow();
+        Employee employee = employeeRepository.findByUsername(vacationDTO.getEmployeeUsername()).orElseThrow();
         vacation.setEmployee(employee);
+        vacation.setStartYearMonth(YearMonth.from(vacation.getStartDate()).toString());
+        vacation.setEndYearMonth(YearMonth.from(vacation.getEndDate()).toString());
         return vacationMapper.vacationToVacationDTO(vacationRepository.save(vacation));
     }
 

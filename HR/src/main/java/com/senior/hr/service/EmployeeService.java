@@ -2,7 +2,6 @@ package com.senior.hr.service;
 
 import com.senior.hr.DTO.AttendanceCSVDTO;
 import com.senior.hr.DTO.EmployeeDTO;
-import com.senior.hr.DTO.SalaryCalculationRequestForOneEmployeeRequestDTO;
 import com.senior.hr.DTO.SalaryCalculationResponseForOneEmployeeDTO;
 
 import java.util.List;
@@ -20,5 +19,5 @@ public interface EmployeeService {
 
     List<AttendanceCSVDTO> findAttendanceByEmployeeAndMonthAndYear(String username, Integer month, Integer year);
 
-    SalaryCalculationResponseForOneEmployeeDTO calculateSalary(SalaryCalculationRequestForOneEmployeeRequestDTO request);
+    SalaryCalculationResponseForOneEmployeeDTO calculateSalary(String username);
 }

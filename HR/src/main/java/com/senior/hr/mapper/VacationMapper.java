@@ -6,19 +6,22 @@ import com.senior.hr.model.Vacation;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
 
 @Component
 public class VacationMapper {
+    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public Vacation vacationDTOToVacation(VacationDTO vacationDTO) {
         Vacation vacation = new Vacation();
-        if (vacationDTO.getStartDate() != null) {
-            vacation.setStartDate(Date.valueOf(vacationDTO.getStartDate()));
+        if (vacationDTO.getStartDate() != null && vacationDTO.getEndDate() != null) {
+            vacation.setStartDate(LocalDate.parse(vacationDTO.getStartDate(), dtf));
+            vacation.setEndDate(LocalDate.parse(vacationDTO.getEndDate(), dtf));
+            vacation.setNumberOfDays(LocalDate.parse(vacationDTO.getStartDate(), dtf).datesUntil(LocalDate.parse(vacationDTO.getEndDate(), dtf)).toList().size());
         }
-        if (vacationDTO.getEndDate() != null) {
-            vacation.setEndDate(Date.valueOf(vacationDTO.getEndDate()));
-        }
-        vacation.setApproved(vacationDTO.getApproved());
-        vacation.setNumberOfDays(vacationDTO.getNumberOfDays());
+        vacation.setApproved(false);
+        vacation.setPayed(vacationDTO.getPayed());
         return vacation;
     }
 
@@ -26,19 +29,17 @@ public class VacationMapper {
         VacationDTO vacationDTO = new VacationDTO();
         vacationDTO.setId(vacation.getId());
         vacationDTO.setApproved(vacation.getApproved());
-        Date startDate = vacation.getStartDate();
+        LocalDate startDate = vacation.getStartDate();
         if (startDate != null) {
             vacationDTO.setStartDate(startDate.toString());
         }
-        Date endDate = vacation.getEndDate();
+        LocalDate endDate = vacation.getEndDate();
         if (endDate != null) {
             vacationDTO.setEndDate(endDate.toString());
         }
         vacationDTO.setNumberOfDays(vacation.getNumberOfDays());
         vacationDTO.setPayed(vacation.getPayed());
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        employeeDTO.setUsername(vacation.getEmployee().getUsername());
-        vacationDTO.setEmployeeDTO(employeeDTO);
+        vacationDTO.setEmployeeUsername(vacation.getEmployee().getUsername());
         return vacationDTO;
     }
 }

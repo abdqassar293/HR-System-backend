@@ -67,8 +67,8 @@ public class EmployeeController {
         return employeeService.findAttendanceByEmployeeAndMonthAndYear(username, Integer.parseInt(month), Integer.parseInt(year));
     }
 
-    @PostMapping("calculateSalaryThisMonth")
-    public SalaryCalculationResponseForOneEmployeeDTO calculate(@RequestBody SalaryCalculationRequestForOneEmployeeRequestDTO request) {
-        return employeeService.calculateSalary(request);
+    @GetMapping("calculateSalary")
+    public SalaryCalculationResponseForOneEmployeeDTO calculate(@RequestParam String username) {
+        return employeeService.calculateSalary(username);
     }
 }

@@ -13,6 +13,8 @@ public interface VacationRepository extends JpaRepository<Vacation, Long> {
 
     List<Vacation> findAllByEmployee(Employee employee);
 
-    List<Vacation> findByEmployeeAndPayedIsTrueAndApprovedIsTrue(Employee employee);
+    List<Vacation> findByEmployeeAndPayedIsTrueAndApprovedIsTrueAndStartYearMonth(Employee employee, String yearMonth);
+
+    List<Vacation> findByEmployeeAndPayedIsTrueAndApprovedIsTrueAndEndYearMonth(Employee employee, String yearMonth);
     void deleteByEmployee(Employee employee);
 }

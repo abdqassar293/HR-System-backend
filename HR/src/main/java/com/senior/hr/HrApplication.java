@@ -7,11 +7,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 @SpringBootApplication
@@ -87,10 +89,10 @@ class BootStrap implements CommandLineRunner {
         positionRepository.save(position1);
         Benefit benefit = new Benefit();
         benefit.setName("Transportation");
-        benefit.setCutPercentage(2.3);
+        benefit.setCutPercentage(0.23);
         Benefit benefit1 = new Benefit();
         benefit1.setName("Health insurance");
-        benefit1.setCutPercentage(3.33);
+        benefit1.setCutPercentage(0.10);
         benefitRepository.saveAll(List.of(benefit, benefit1));
         Manager manager = new Manager();
         manager.setUsername("abdm");
@@ -212,19 +214,23 @@ class BootStrap implements CommandLineRunner {
         applicationRepository.save(application1);
         Vacation vacation = new Vacation();
         vacation.setNumberOfDays(2);
-        vacation.setStartDate(Date.valueOf("2024-01-07"));
-        vacation.setEndDate(Date.valueOf("2024-01-09"));
+        vacation.setStartDate(LocalDate.of(2023, 12, 17));
+        vacation.setEndDate(LocalDate.of(2023, 12, 20));
         vacation.setPayed(true);
         vacation.setEmployee(employee);
-        vacation.setApproved(false);
+        vacation.setApproved(true);
+        vacation.setStartYearMonth(YearMonth.from(vacation.getStartDate()).toString());
+        vacation.setEndYearMonth(YearMonth.from(vacation.getEndDate()).toString());
         vacationRepository.save(vacation);
         Vacation vacation1 = new Vacation();
         vacation1.setNumberOfDays(2);
-        vacation1.setStartDate(Date.valueOf("2024-01-07"));
-        vacation1.setEndDate(Date.valueOf("2024-01-09"));
+        vacation1.setStartDate(LocalDate.of(2023, 11, 25));
+        vacation1.setEndDate(LocalDate.of(2023, 12, 4));
         vacation1.setPayed(true);
         vacation1.setEmployee(employee);
         vacation1.setApproved(true);
+        vacation1.setStartYearMonth(YearMonth.from(vacation1.getStartDate()).toString());
+        vacation1.setEndYearMonth(YearMonth.from(vacation1.getEndDate()).toString());
         vacationRepository.save(vacation1);
         Report report = new Report();
         report.setReport_result(ReportResultEnum.good);

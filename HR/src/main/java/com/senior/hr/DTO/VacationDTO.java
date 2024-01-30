@@ -10,5 +10,5 @@ public class VacationDTO {
     private Boolean payed;
     private Integer numberOfDays;
     private Boolean approved;
-    private EmployeeDTO employeeDTO;
+    private String employeeUsername;
 }
