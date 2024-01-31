@@ -58,4 +58,6 @@ public class UserEntity {
 
     @Column(name = "residence")
     private String residence;
+
+    private String email;
 }

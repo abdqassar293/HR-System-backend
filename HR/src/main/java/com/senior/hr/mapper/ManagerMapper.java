@@ -41,6 +41,7 @@ public class ManagerMapper {
         managerDTO.setContractNumber(manager.getContractNumber());
         managerDTO.setNumber(manager.getNumber());
         managerDTO.setSalary(manager.getSalary());
+        managerDTO.setEmail(manager.getEmail());
         Date date = manager.getDateOfBirth();
         if (date != null) {
             managerDTO.setDateOfBirth(date.toString());

@@ -20,7 +20,7 @@ public class ApplicantMapper {
         applicant.setMotherName(applicantDTO.getMotherName());
         applicant.setSsn(applicantDTO.getSsn());
         applicant.setResidence(applicantDTO.getResidence());
-        applicant.setPrevCompany(applicantDTO.getPrevCompany());
+        applicant.setEmail(applicantDTO.getEmail());
         Date dateOfBirth = Date.valueOf(applicantDTO.getDateOfBirth());
         applicant.setDateOfBirth(dateOfBirth);
         applicant.setPlaceOfBirth(applicantDTO.getPlaceOfBirth());
@@ -39,7 +39,7 @@ public class ApplicantMapper {
         applicantDTO.setMotherName(applicant.getMotherName());
         applicantDTO.setSsn(applicant.getSsn());
         applicantDTO.setResidence(applicant.getResidence());
-        applicantDTO.setPrevCompany(applicant.getPrevCompany());
+        applicantDTO.setEmail(applicant.getEmail());
         Date date = applicant.getDateOfBirth();
         if (date != null) {
             applicantDTO.setDateOfBirth(date.toString());

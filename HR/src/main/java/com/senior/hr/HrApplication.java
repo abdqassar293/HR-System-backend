@@ -69,13 +69,13 @@ class BootStrap implements CommandLineRunner {
         applicant.setPassword(passwordEncoder.encode("1234"));
         applicant.setRole(applicantRole);
         applicant.setDateOfBirth(new Date(100, 12, 5));
-        applicant.setPrevCompany("sdfsdf");
+        applicant.setEmail("abd.kassar10@outlook.com");
         applicant.setFatherName("dsfs");
         applicant.setFirstName("sdfsdf");
         applicant.setLastName("dsf");
         applicant.setMotherName("sdafas");
         applicant.setDegree("sadfsadf");
-        applicant.setPrevCompany("sdfsdf");
+        applicant.setEmail("abd.kassar10@outlook.com");
         applicant.setPlaceOfBirth("sdfsdf");
         applicant.setResidence("sdfsdf");
         applicant.setNumber("0932323");

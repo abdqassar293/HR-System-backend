@@ -6,6 +6,8 @@ import com.senior.hr.model.*;
 import com.senior.hr.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -29,7 +31,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     private final PositionRepository positionRepository;
     private final ManagerRepository managerRepository;
     private final RoleRepository roleRepository;
-
+    private final JavaMailSender mailSender;
     @Override
     @Transactional
     public void addApplication(ApplicationDTO applicationDTO) {
@@ -71,6 +73,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
+    @Transactional
     public QualifyApplicationResponseDTO qualifyApplication(QualifyApplicationRequestDTO qualifyApplicationRequestDTO) {
         //Todo exception Handling
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -82,6 +85,11 @@ public class ApplicationServiceImpl implements ApplicationService {
         QualifyApplicationResponseDTO qualifyApplicationResponseDTO = new QualifyApplicationResponseDTO();
         qualifyApplicationResponseDTO.setInterviewDate(application.getInterviewDate().format(dtf));
         qualifyApplicationResponseDTO.setMessage("Date reserved");
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(application.getApplicant().getEmail());
+        message.setSubject("you are qualified for an interview");
+        message.setText("you are qualified for an Interview at our company for your application for " + application.getVacancy().getApplications() + " job." + '\n' + "your interview is at " + application.getApplicationDate().toLocalDate().getDayOfWeek() + " " + qualifyApplicationResponseDTO.getInterviewDate() + ".");
+        mailSender.send(message);
         return qualifyApplicationResponseDTO;
     }
 

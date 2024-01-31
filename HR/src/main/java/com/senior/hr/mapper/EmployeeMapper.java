@@ -53,6 +53,7 @@ public class EmployeeMapper {
         employeeDTO.setDegree(employee.getDegree());
         employeeDTO.setNumber(employee.getNumber());
         employeeDTO.setSalary(employee.getSalary());
+        employeeDTO.setEmail(employeeDTO.getEmail());
         Date date = employee.getDateOfBirth();
         if (date != null) {
             employeeDTO.setDateOfBirth(date.toString());

@@ -13,9 +13,6 @@ import java.util.List;
 @DiscriminatorValue("1")
 public class Applicant extends UserEntity {
 
-    @Column(name = "prev_company")
-    private String prevCompany;
-
     @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Application> applications = new ArrayList<>();
 

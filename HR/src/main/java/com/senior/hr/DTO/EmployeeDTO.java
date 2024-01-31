@@ -21,6 +21,7 @@ public class EmployeeDTO {
     private String dateOfBirth;
     private String number;
     private String residence;
+    private String email;
     private String position;
     private Double salary;
     private String contractNumber;

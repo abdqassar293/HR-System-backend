@@ -17,5 +17,5 @@ public class ApplicantDTO {
     private String dateOfBirth;
     private String number;
     private String residence;
-    private String prevCompany;
+    private String email;
 }
