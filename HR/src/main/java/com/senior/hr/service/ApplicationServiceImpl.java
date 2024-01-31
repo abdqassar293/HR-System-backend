@@ -88,7 +88,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(application.getApplicant().getEmail());
         message.setSubject("you are qualified for an interview");
-        message.setText("you are qualified for an Interview at our company for your application for " + application.getVacancy().getApplications() + " job." + '\n' + "your interview is at " + application.getApplicationDate().toLocalDate().getDayOfWeek() + " " + qualifyApplicationResponseDTO.getInterviewDate() + ".");
+        message.setText("you are qualified for an Interview at our company for your application for " + application.getVacancy().getJobTitle() + " position." + '\n' + "your interview is at " + application.getApplicationDate().toLocalDate().getDayOfWeek() + " " + qualifyApplicationResponseDTO.getInterviewDate() + ".");
         mailSender.send(message);
         return qualifyApplicationResponseDTO;
     }
