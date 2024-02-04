@@ -40,4 +40,9 @@ public class ManagerController {
     public List<EmployeeDTO> listEmployeeByManager(@RequestParam String managerUsername) {
         return managerService.listAllManagerEmployees(managerUsername);
     }
+
+    @GetMapping("listAllManagers")
+    public List<ManagerDTO> listAllManagers() {
+        return managerService.listManagers();
+    }
 }

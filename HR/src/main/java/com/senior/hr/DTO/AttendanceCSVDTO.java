@@ -14,7 +14,7 @@ public class AttendanceCSVDTO {
     @CsvBindByName
     private Integer year;
     @CsvBindByName
-    private Double arrival;
+    private String arrival;
     @CsvBindByName
-    private Double departure;
+    private String departure;
 }

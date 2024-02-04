@@ -1,8 +1,12 @@
 package com.senior.hr.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -18,6 +22,8 @@ public class Attendance {
     private Integer day;
     private Integer month;
     private Integer year;
-    private Double arrival;
-    private Double departure;
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime arrival;
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime departure;
 }

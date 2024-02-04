@@ -2,6 +2,9 @@ package com.senior.hr.DTO;
 
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 public class ManagerDTO {
     private Long Id;
@@ -20,4 +23,5 @@ public class ManagerDTO {
     private String email;
     private Double salary;
     private String contractNumber;
+    private List<BenefitDTO> benefits = new ArrayList<>();
 }

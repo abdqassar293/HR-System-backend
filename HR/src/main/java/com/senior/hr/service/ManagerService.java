@@ -7,6 +7,8 @@ import java.util.List;
 public interface ManagerService {
     List<ManagerResponseDTO> listAllManagers();
 
+    List<ManagerDTO> listManagers();
+
     void deleteManagerByUsername(String username);
 
     ManagerDTO makaManager(MakeManagerRequestDTO makeManagerRequestDTO);

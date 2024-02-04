@@ -2,12 +2,16 @@ package com.senior.hr.mapper;
 
 import com.senior.hr.DTO.ManagerDTO;
 import com.senior.hr.model.Manager;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
+import java.util.stream.Collectors;
 
 @Component
+@AllArgsConstructor
 public class ManagerMapper {
+    private final BenefitMapper benefitMapper;
     public Manager managerDTOToManager(ManagerDTO managerDTO) {
         Manager manager = new Manager();
         manager.setFirstName(managerDTO.getFirstName());
@@ -46,6 +50,7 @@ public class ManagerMapper {
         if (date != null) {
             managerDTO.setDateOfBirth(date.toString());
         }
+        managerDTO.setBenefits(manager.getBenefits().stream().map(benefitMapper::benefitToBenefitDTO).collect(Collectors.toList()));
         managerDTO.setResidence(manager.getResidence());
         return managerDTO;
     }

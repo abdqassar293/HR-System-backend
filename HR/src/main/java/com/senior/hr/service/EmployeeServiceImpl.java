@@ -11,9 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.YearMonth;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -52,6 +51,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void addAttendance(List<AttendanceCSVDTO> attendanceCSVDTOS) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
         List<Attendance> attendanceList = attendanceCSVDTOS.stream().map(attendanceDTO -> {
             //Todo exception handling
             Employee employee = employeeRepository.findByUsername(attendanceDTO.getUsername()).orElseThrow();
@@ -60,8 +60,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             attendance.setDay(attendanceDTO.getDay());
             attendance.setMonth(attendanceDTO.getMonth());
             attendance.setYear(attendanceDTO.getYear());
-            attendance.setArrival(attendanceDTO.getArrival());
-            attendance.setDeparture(attendanceDTO.getDeparture());
+            attendance.setArrival(LocalTime.parse(attendanceDTO.getArrival(), dtf));
+            attendance.setDeparture(LocalTime.parse(attendanceDTO.getDeparture(), dtf));
             return attendance;
         }).toList();
         attendanceRepository.saveAll(attendanceList);
@@ -69,6 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public List<AttendanceCSVDTO> findAttendanceByEmployeeAndMonthAndYear(String username, Integer month, Integer year) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
         Employee employee = employeeRepository.findByUsername(username).orElseThrow();
         return attendanceRepository.findAttendanceByEmployeeAndMonthAndYear(employee, month, year).stream().map(attendance -> {
             AttendanceCSVDTO attendanceCSVDTO = new AttendanceCSVDTO();
@@ -76,8 +77,8 @@ public class EmployeeServiceImpl implements EmployeeService {
             attendanceCSVDTO.setDay(attendance.getDay());
             attendanceCSVDTO.setMonth(month);
             attendanceCSVDTO.setYear(year);
-            attendanceCSVDTO.setArrival(attendance.getArrival());
-            attendanceCSVDTO.setDeparture(attendance.getDeparture());
+            attendanceCSVDTO.setArrival(attendance.getArrival().format(dtf));
+            attendanceCSVDTO.setDeparture(attendance.getDeparture().format(dtf));
             return attendanceCSVDTO;
         }).toList();
     }
@@ -94,7 +95,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<Attendance> attendanceList = attendanceRepository.findAttendanceByEmployeeAndMonthAndYear(employee, date.getMonth().getValue(), date.getYear());
         AtomicReference<Double> hourSum = new AtomicReference<>(0.0);
         attendanceList.forEach(attendance -> {
-            Double hourInDay = attendance.getDeparture() - attendance.getArrival();
+            Double hourInDay = (double) (Duration.between(attendance.getArrival(), attendance.getDeparture()).toMinutes() / 60L);
             hourSum.updateAndGet(v -> v + hourInDay);
         });
         List<Vacation> payedVacations = vacationRepository.findByEmployeeAndPayedIsTrueAndApprovedIsTrueAndStartYearMonth(employee, YearMonth.from(date).toString());

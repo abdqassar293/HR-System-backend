@@ -37,6 +37,11 @@ public class ManagerServiceImpl implements ManagerService {
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public List<ManagerDTO> listManagers() {
+        return managerRepository.findAll().stream().map(managerMapper::managerToManagerDTO).toList();
+    }
+
     @Transactional
     @Override
     public void deleteManagerByUsername(String username) {
