@@ -2,7 +2,6 @@ package com.senior.hr.DTO;
 
 import lombok.Data;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,4 +27,5 @@ public class EmployeeDTO {
     private ManagerResponseDTO managerDTO;
     private List<BenefitDTO> benefits = new ArrayList<>();
     private List<WarningDTO> warnings = new ArrayList<>();
+    private List<ReportsDTOResponse> reports = new ArrayList<>();
 }

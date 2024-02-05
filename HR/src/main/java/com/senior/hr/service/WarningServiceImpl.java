@@ -15,6 +15,7 @@ import com.senior.hr.repository.WarningRepository;
 import com.senior.hr.repository.WarningTypeRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class WarningServiceImpl implements WarningService {
     private final WarningRepository warningRepository;
     private final EmployeeRepository employeeRepository;
@@ -66,7 +68,7 @@ public class WarningServiceImpl implements WarningService {
     public void deleteWarningType(String warningTypeName) {
         //Todo add exception handling
         WarningType warningType = warningTypeRepository.findByName(warningTypeName).orElseThrow();
-        //warningRepository.deleteWarningByWarningType(warningType);
+        warningRepository.deleteWarningByWarningType(warningType);
         warningTypeRepository.deleteByName(warningTypeName);
     }
 

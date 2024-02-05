@@ -1,6 +1,5 @@
 package com.senior.hr.DTO;
 
-import com.senior.hr.model.JobTypeEnum;
 import lombok.Data;
 
 @Data

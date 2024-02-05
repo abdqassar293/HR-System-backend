@@ -20,6 +20,7 @@ import java.util.List;
 public class ApplicantController {
     private final ApplicantService applicantService;
     private final UserEntityRepository userEntityRepository;
+
     @PostMapping("addNewApplicant")
     public ResponseEntity<RegisterResponseDTO> addNewApplicant(@RequestBody ApplicantDTO applicantDTO) {
         if (userEntityRepository.existsByUsername(applicantDTO.getUsername())) {

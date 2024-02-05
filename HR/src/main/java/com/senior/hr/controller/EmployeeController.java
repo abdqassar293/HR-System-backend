@@ -71,4 +71,9 @@ public class EmployeeController {
     public SalaryCalculationResponseForOneEmployeeDTO calculate(@RequestParam String username) {
         return employeeService.calculateSalary(username);
     }
+
+    @PutMapping("edit")
+    public EmployeeDTO editEmployee(@RequestBody EmployeeDTO employeeDTO, @RequestParam String username) {
+        return employeeService.editEmployeeInfo(employeeDTO, username);
+    }
 }

@@ -83,7 +83,7 @@ public class AuthController {
         ValidityResponseDTO validityResponseDTO = new ValidityResponseDTO();
         validityResponseDTO.setIsValid(isValid);
         if (isValid) {
-            UserEntity userEntity = userEntityRepository.findByUsername(jwtService.getUsernameFromJWT(token)).get();
+            UserEntity userEntity = userEntityRepository.findByUsername(jwtService.getUsernameFromJWT(token)).orElseThrow();
             validityResponseDTO.setUsername(userEntity.getUsername());
             validityResponseDTO.setRole(userEntity.getRole().getRoleName());
         }

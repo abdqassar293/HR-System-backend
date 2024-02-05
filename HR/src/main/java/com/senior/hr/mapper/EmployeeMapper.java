@@ -2,8 +2,8 @@ package com.senior.hr.mapper;
 
 import com.senior.hr.DTO.EmployeeDTO;
 import com.senior.hr.DTO.ManagerResponseDTO;
+import com.senior.hr.DTO.ReportsDTOResponse;
 import com.senior.hr.model.Employee;
-import com.senior.hr.model.Warning;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,32 +13,26 @@ import java.util.stream.Collectors;
 @Component
 @AllArgsConstructor
 public class EmployeeMapper {
-    private final PositionMapper positionMapper;
-    private final ManagerMapper managerMapper;
     private final BenefitMapper benefitMapper;
     private final WarningMapper warningMapper;
 
-    public Employee employeeDTOToEmployee(EmployeeDTO employeeDTO) {
+    /*public Employee employeeDTOToEmployee(EmployeeDTO employeeDTO) {
         Employee employee = new Employee();
-        employee.setFirstName(employeeDTO.getFirstName());
-        employee.setLastName(employeeDTO.getLastName());
         employee.setUsername(employeeDTO.getUsername());
         employee.setPassword(employeeDTO.getPassword());
-        employee.setDegree(employeeDTO.getDegree());
-        employee.setNumber(employeeDTO.getNumber());
+        employee.setFirstName(employeeDTO.getFirstName());
+        employee.setLastName(employeeDTO.getLastName());
         employee.setFatherName(employeeDTO.getFatherName());
-        employee.setResidence(employeeDTO.getResidence());
-        employee.setSsn(employeeDTO.getSsn());
-        employee.setSalary(employeeDTO.getSalary());
-        if (employeeDTO.getDateOfBirth() != null) {
-            employee.setDateOfBirth(Date.valueOf(employeeDTO.getDateOfBirth()));
-        }
         employee.setMotherName(employeeDTO.getMotherName());
-        //employee.setPosition(positionMapper.positionDTOToPosition(employeeDTO.getPosition()));
-        //employee.setManager(managerMapper.managerDTOToManager(employeeDTO.getManagerDTO()));
-        employee.setBenefits(employeeDTO.getBenefits().stream().map(benefitMapper::benefitDTOToBenefit).collect(Collectors.toList()));
+        employee.setSsn(employeeDTO.getSsn());
+        employee.setNumber(employeeDTO.getNumber());
+        employee.setResidence(employeeDTO.getResidence());
+        employee.setDegree(employeeDTO.getDegree());
+        employee.setSalary(employeeDTO.getSalary());
+        employee.setEmail(employeeDTO.getEmail());
+        employee.setContractNumber(employee.getContractNumber());
         return employee;
-    }
+    }*/
 
     public EmployeeDTO employeeToEmployeeDTO(Employee employee) {
         EmployeeDTO employeeDTO = new EmployeeDTO();
@@ -53,7 +47,8 @@ public class EmployeeMapper {
         employeeDTO.setDegree(employee.getDegree());
         employeeDTO.setNumber(employee.getNumber());
         employeeDTO.setSalary(employee.getSalary());
-        employeeDTO.setEmail(employeeDTO.getEmail());
+        employeeDTO.setEmail(employee.getEmail());
+        employeeDTO.setContractNumber(employeeDTO.getContractNumber());
         Date date = employee.getDateOfBirth();
         if (date != null) {
             employeeDTO.setDateOfBirth(date.toString());
@@ -68,6 +63,15 @@ public class EmployeeMapper {
         employeeDTO.setManagerDTO(managerResponseDTO);
         employeeDTO.setBenefits(employee.getBenefits().stream().map(benefitMapper::benefitToBenefitDTO).collect(Collectors.toList()));
         employeeDTO.setWarnings(employee.getWarnings().stream().map(warningMapper::warningToWarningDTO).collect(Collectors.toList()));
+        employeeDTO.setReports(employee.getReports().stream().map(report -> {
+            ReportsDTOResponse reportsDTOResponse = new ReportsDTOResponse();
+            reportsDTOResponse.setDateIssued(report.getDateIssued().toString());
+            reportsDTOResponse.setReportResult(report.getReport_result().toString());
+            reportsDTOResponse.setReportDescription(report.getReportDescription());
+            reportsDTOResponse.setRating(report.getRating());
+            reportsDTOResponse.setManagerUsername(report.getIssuer().getUsername());
+            return reportsDTOResponse;
+        }).toList());
         return employeeDTO;
     }
 }

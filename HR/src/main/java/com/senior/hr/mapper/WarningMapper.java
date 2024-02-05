@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 public class WarningMapper {
     private final WarningTypeMapper warningTypeMapper;
 
-    public Warning warningDTOToWarning(WarningDTO warningDTO) {
+    /*public Warning warningDTOToWarning(WarningDTO warningDTO) {
         Warning warning = new Warning();
         warning.setDescription(warningDTO.getDescription());
         warning.setWarningType(warningTypeMapper.warningTypeDTOToWarningType(warningDTO.getWarningType()));
         return warning;
-    }
+    }*/
 
     public WarningDTO warningToWarningDTO(Warning warning) {
         WarningDTO warningDTO = new WarningDTO();

@@ -11,7 +11,7 @@ public interface EmployeeService {
 
     void deleteEmployeeByUsername(String username);
 
-    EmployeeDTO editEmployeeInfo(EmployeeDTO employeeDTO);
+    EmployeeDTO editEmployeeInfo(EmployeeDTO employeeDTO, String currentUsername);
 
     EmployeeDTO findEmployeeByUsername(String username);
 

@@ -9,6 +9,7 @@ import com.senior.hr.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.*;
@@ -26,8 +27,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final AttendanceRepository attendanceRepository;
     private final RealSalaryRepository realSalaryRepository;
     private final VacationRepository vacationRepository;
-
+    private final PasswordEncoder passwordEncoder;
     @Override
+    @Transactional
     public List<EmployeeDTO> findAllEmployee() {
         return employeeRepository.findAll().stream().map(employeeMapper::employeeToEmployeeDTO).collect(Collectors.toList());
     }
@@ -39,8 +41,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDTO editEmployeeInfo(EmployeeDTO employeeDTO) {
-        return null;
+    @Transactional
+    public EmployeeDTO editEmployeeInfo(EmployeeDTO employeeDTO, String currentUsername) {
+        Employee employee = employeeRepository.findByUsername(currentUsername).orElseThrow();
+        if (employeeDTO.getUsername() != null) employee.setUsername(employeeDTO.getUsername());
+        if (employeeDTO.getPassword() != null) {
+            employee.setPassword(passwordEncoder.encode(employeeDTO.getPassword()));
+        }
+        if (employeeDTO.getNumber() != null) employee.setNumber(employeeDTO.getNumber());
+        if (employeeDTO.getResidence() != null) employee.setResidence(employeeDTO.getResidence());
+        if (employeeDTO.getDegree() != null) employee.setDegree(employeeDTO.getDegree());
+        if (employeeDTO.getSalary() != null) employee.setSalary(employeeDTO.getSalary());
+        if (employeeDTO.getEmail() != null) employee.setEmail(employeeDTO.getEmail());
+        if (employee.getContractNumber() != null) employee.setContractNumber(employee.getContractNumber());
+        return employeeMapper.employeeToEmployeeDTO(employeeRepository.save(employee));
     }
 
     @Override

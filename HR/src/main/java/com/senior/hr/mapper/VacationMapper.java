@@ -1,14 +1,11 @@
 package com.senior.hr.mapper;
 
-import com.senior.hr.DTO.EmployeeDTO;
 import com.senior.hr.DTO.VacationDTO;
 import com.senior.hr.model.Vacation;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.stream.Collectors;
 
 @Component
 public class VacationMapper {

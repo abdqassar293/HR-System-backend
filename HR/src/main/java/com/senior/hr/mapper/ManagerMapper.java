@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ManagerMapper {
     private final BenefitMapper benefitMapper;
-    public Manager managerDTOToManager(ManagerDTO managerDTO) {
+    /*public Manager managerDTOToManager(ManagerDTO managerDTO) {
         Manager manager = new Manager();
         manager.setFirstName(managerDTO.getFirstName());
         manager.setLastName(managerDTO.getLastName());
@@ -29,7 +29,7 @@ public class ManagerMapper {
         }
         manager.setMotherName(managerDTO.getMotherName());
         return manager;
-    }
+    }*/
 
     public ManagerDTO managerToManagerDTO(Manager manager) {
         ManagerDTO managerDTO = new ManagerDTO();

@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Slf4j
 public class ManagerServiceImpl implements ManagerService {
+    private final ReportsRepository reportsRepository;
     private final ManagerRepository managerRepository;
     private final EmployeeRepository employeeRepository;
     private final RoleRepository roleRepository;
@@ -55,6 +56,7 @@ public class ManagerServiceImpl implements ManagerService {
         Employee employee = employeeRepository.findByUsername(makeManagerRequestDTO.getEmployeeUsername()).orElseThrow();
         vacationRepository.deleteByEmployee(employee);
         warningRepository.deleteByEmployee(employee);
+        reportsRepository.deleteByEmployee(employee);
         employeeRepository.delete(employee);
         Manager manager = new Manager();
         manager.setContractNumber(makeManagerRequestDTO.getNewContractNumber());
