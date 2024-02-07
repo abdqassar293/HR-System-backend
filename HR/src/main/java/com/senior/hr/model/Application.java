@@ -50,4 +50,9 @@ public class Application {
 
     @Column(name = "interview_date")
     private LocalDateTime interviewDate;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "screening_results_id")
+    private ScreeningResults screeningResults;
+
 }

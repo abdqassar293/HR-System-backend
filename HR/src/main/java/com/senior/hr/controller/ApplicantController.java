@@ -2,6 +2,7 @@ package com.senior.hr.controller;
 
 import com.senior.hr.DTO.ApplicantDTO;
 import com.senior.hr.DTO.RegisterResponseDTO;
+import com.senior.hr.repository.RoleRepository;
 import com.senior.hr.repository.UserEntityRepository;
 import com.senior.hr.service.ApplicantService;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequestMapping("/api/applicant")
 @AllArgsConstructor
 public class ApplicantController {
+    private final RoleRepository roleRepository;
     private final ApplicantService applicantService;
     private final UserEntityRepository userEntityRepository;
 

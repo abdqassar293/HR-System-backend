@@ -27,7 +27,7 @@ public class ApplicantServiceImpl implements ApplicantService {
     @Override
     public void addApplicant(ApplicantDTO applicantDTO) {
         Applicant applicant = applicantMapper.applicantDTOToApplicant(applicantDTO);
-        Optional<Role> roleOptional = roleRepository.findRoleByRoleName("Applicant");
+        Optional<Role> roleOptional = roleRepository.findRoleByRoleName("APP");
         roleOptional.ifPresent(applicant::setRole);
         applicant.setPassword(passwordEncoder.encode(applicant.getPassword()));
         applicantMapper.applicantToApplicantDTO(applicantRepository.save(applicant));

@@ -7,15 +7,18 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
+@EnableAsync
 public class HrApplication {
 
     public static void main(String[] args) {
@@ -42,6 +45,7 @@ class BootStrap implements CommandLineRunner {
     private final VacationRepository vacationRepository;
     private final UserEntityRepository userEntityRepository;
     private final ReportsRepository reportsRepository;
+    private final ScreeningResultsRepository screeningResultsRepository;
 
     @Transactional
     @Override
@@ -190,7 +194,7 @@ class BootStrap implements CommandLineRunner {
         employeeRepository.save(employee);
 
         Employee employee1 = new Employee();
-        employee1.setUsername("emp1");
+        employee1.setUsername("emp2");
         employee1.setPassword(passwordEncoder.encode("1234"));
         employee1.setContractNumber("A32433");
         employee1.setRole(employeeRole);
@@ -251,6 +255,32 @@ class BootStrap implements CommandLineRunner {
         vacancy1.setJobType(JobTypeEnum.InternShip);
         vacancyRepository.save(vacancy1);
 
+        ScreeningResults screeningResults = new ScreeningResults();
+        screeningResults.setSoftwareDeveloper(0.77);
+        screeningResults.setFrontEnd(0.77);
+        screeningResults.setNetworkAdmin(0.77);
+        screeningResults.setWebDeveloper(0.77);
+        screeningResults.setProjectManager(0.77);
+        screeningResults.setDatabaseAdmin(0.77);
+        screeningResults.setSecurityAnalyst(0.77);
+        screeningResults.setSystemAdmin(0.77);
+        screeningResults.setPythonDeveloper(0.77);
+        screeningResults.setJavaDeveloper(0.77);
+        screeningResultsRepository.save(screeningResults);
+
+        ScreeningResults screeningResults1 = new ScreeningResults();
+        screeningResults1.setSoftwareDeveloper(0.77);
+        screeningResults1.setFrontEnd(0.77);
+        screeningResults1.setNetworkAdmin(0.77);
+        screeningResults1.setWebDeveloper(0.77);
+        screeningResults1.setProjectManager(0.77);
+        screeningResults1.setDatabaseAdmin(0.77);
+        screeningResults1.setSecurityAnalyst(0.77);
+        screeningResults1.setSystemAdmin(0.77);
+        screeningResults1.setPythonDeveloper(0.77);
+        screeningResults1.setJavaDeveloper(0.77);
+        screeningResultsRepository.save(screeningResults1);
+
         Application application = new Application();
         application.setPreviousProjects(List.of(previousProject1, previousProject2));
         application.setApplicationDate(Date.valueOf(LocalDate.now()));
@@ -260,6 +290,7 @@ class BootStrap implements CommandLineRunner {
         application.setQualifiedForInterview(false);
         application.setEnglishLevel("B1");
         application.setProgrammingLanguage("python");
+        application.setScreeningResults(screeningResults);
         applicationRepository.save(application);
 
         Application application1 = new Application();
@@ -271,6 +302,7 @@ class BootStrap implements CommandLineRunner {
         application1.setQualifiedForInterview(false);
         application1.setEnglishLevel("A1");
         application1.setProgrammingLanguage("java");
+        application1.setScreeningResults(screeningResults1);
         applicationRepository.save(application1);
 
         Vacation vacation = new Vacation();
@@ -296,8 +328,8 @@ class BootStrap implements CommandLineRunner {
         vacationRepository.save(vacation1);
 
         Report report = new Report();
-        report.setReport_result(ReportResultEnum.good);
-        report.setRating(5);
+        report.setReport_result("Core Player(Moderate performance, Moderate potential)");
+        report.setRating(4);
         report.setIssuer(manager1);
         report.setEmployee(employee);
         report.setDateIssued(Date.valueOf(LocalDate.now()));

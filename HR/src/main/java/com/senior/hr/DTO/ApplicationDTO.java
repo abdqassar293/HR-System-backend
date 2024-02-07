@@ -1,5 +1,6 @@
 package com.senior.hr.DTO;
 
+import com.senior.hr.model.ScreeningResults;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -17,4 +18,5 @@ public class ApplicationDTO {
     private String interviewDate;
     private VacancyDTO vacancy;
     private ApplicantDTO applicant;
+    private ScreeningResults screeningResults;
 }

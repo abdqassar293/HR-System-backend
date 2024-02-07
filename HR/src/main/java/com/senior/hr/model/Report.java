@@ -16,10 +16,10 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
     @JdbcTypeCode(SqlTypes.CLOB)
     private String reportDescription;
-    @Enumerated(EnumType.STRING)
-    private ReportResultEnum report_result;
+    private String report_result;
     private Integer rating;
     private Date dateIssued;
 

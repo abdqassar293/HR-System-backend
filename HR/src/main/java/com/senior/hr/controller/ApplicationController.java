@@ -4,6 +4,7 @@ import com.senior.hr.DTO.*;
 import com.senior.hr.service.ApplicationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class ApplicationController {
     }
 
     @PostMapping("addNewApplication")
+    @Async
     public void addNewApplication(@RequestBody ApplicationDTO applicationDTO) {
         applicationService.addApplication(applicationDTO);
     }

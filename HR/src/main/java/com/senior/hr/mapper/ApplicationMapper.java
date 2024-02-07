@@ -48,6 +48,7 @@ public class ApplicationMapper {
         applicationDTO.setVacancy(vacancyMapper.vacancyToVacancyDTO(application.getVacancy()));
         applicationDTO.setApplicant(applicantMapper.applicantToApplicantDTO(application.getApplicant()));
         applicationDTO.setPreviousProjects(application.getPreviousProjects().stream().map(previousProjectMapper::previousProjectToPreviousProjectDTO).collect(Collectors.toList()));
+        applicationDTO.setScreeningResults(application.getScreeningResults());
         return applicationDTO;
     }
 
