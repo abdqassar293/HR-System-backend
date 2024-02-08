@@ -2,6 +2,7 @@ package com.senior.hr.controller;
 
 import com.senior.hr.DTO.AddBenefitToEmployeeDTO;
 import com.senior.hr.DTO.BenefitDTO;
+import com.senior.hr.DTO.RegisterResponseDTO;
 import com.senior.hr.service.BenefitService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,5 +37,4 @@ public class BenefitController {
     public void deleteBenefit(@RequestParam Long benefitId) {
         benefitService.deleteBenefitById(benefitId);
     }
-
 }

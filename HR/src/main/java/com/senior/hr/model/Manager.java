@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,5 +22,5 @@ public class Manager extends UserEntity {
     @JoinTable(name = "manager_benefits",
             joinColumns = @JoinColumn(name = "manager_id"),
             inverseJoinColumns = @JoinColumn(name = "benefits_id"))
-    private List<Benefit> benefits = new ArrayList<>();
+    private Set<Benefit> benefits = new HashSet<>();
 }

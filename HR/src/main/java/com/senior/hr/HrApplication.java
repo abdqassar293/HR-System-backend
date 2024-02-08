@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @SpringBootApplication
 @EnableAsync
@@ -126,7 +127,7 @@ class BootStrap implements CommandLineRunner {
         manager.setUsername("mg1");
         manager.setPassword(passwordEncoder.encode("1234"));
         manager.setRole(managerRole);
-        manager.setBenefits(List.of(benefit, benefit1));
+        manager.setBenefits(Set.of(benefit, benefit1));
         manager.setFirstName("Eden");
         manager.setMotherName("MotherName");
         manager.setLastName("Hazard");
@@ -148,7 +149,7 @@ class BootStrap implements CommandLineRunner {
         manager1.setRole(managerRole);
         manager1.setLastName("bono");
         manager1.setFirstName("yassin");
-        manager1.setBenefits(List.of(benefit, benefit1));
+        manager1.setBenefits(Set.of(benefit, benefit1));
         manager1.setMotherName("MotherName");
         manager1.setPlaceOfBirth("Morocco");
         manager1.setDegree("phd");
@@ -190,7 +191,7 @@ class BootStrap implements CommandLineRunner {
         employee.setResidence("London Fulham street building no.34 ");
         employee.setPosition(position);
         employee.setManager(manager);
-        employee.setBenefits(List.of(benefit, benefit1));
+        employee.setBenefits(Set.of(benefit, benefit1));
         employeeRepository.save(employee);
 
         Employee employee1 = new Employee();
@@ -211,7 +212,7 @@ class BootStrap implements CommandLineRunner {
         employee1.setResidence("London Fullham street building no.35");
         employee1.setPosition(position1);
         employee1.setManager(manager1);
-        employee1.setBenefits(List.of(benefit, benefit1));
+        employee1.setBenefits(Set.of(benefit, benefit1));
         employeeRepository.save(employee1);
 
         Warning warning = new Warning();
@@ -284,7 +285,7 @@ class BootStrap implements CommandLineRunner {
         Application application = new Application();
         application.setPreviousProjects(List.of(previousProject1, previousProject2));
         application.setApplicationDate(Date.valueOf(LocalDate.now()));
-        application.setMotivationLetter("");
+        application.setMotivationLetter("jffffffffffffffffffffffdshgfdsjighdsfjghdsfiopghpdsfighidsfhgoidsfhgoidfsgoifdshgiopdsfh");
         application.setApplicant(applicant);
         application.setVacancy(vacancy1);
         application.setQualifiedForInterview(false);
@@ -296,7 +297,7 @@ class BootStrap implements CommandLineRunner {
         Application application1 = new Application();
         application1.setPreviousProjects(List.of(previousProject));
         application1.setApplicationDate(Date.valueOf(LocalDate.now()));
-        application1.setMotivationLetter(" ");
+        application1.setMotivationLetter("ghhhhhhhhghghtuguhtuhguthjdfpgbdfsgidsfhgidhsfgpdfgihdfgiodhfgiopdfhgoidhsfgopidsfgpoidhfgiodshfgiohdfsioghdopsfhgoidfshgoidhfsgiohdsfighdoisfhgoidsphfgpoidhfsgidsfghpdfoghpdofghdosfpghodifhgdfogpdfshgpdosfghidfgihdfpsghdfhigopdsifghoidfhgoidhfghidfghoifdpshgoipdfhgpoidgi");
         application1.setApplicant(applicant1);
         application1.setVacancy(vacancy);
         application1.setQualifiedForInterview(false);

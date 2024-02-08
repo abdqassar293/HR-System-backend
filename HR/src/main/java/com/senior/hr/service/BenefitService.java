@@ -2,6 +2,7 @@ package com.senior.hr.service;
 
 import com.senior.hr.DTO.AddBenefitToEmployeeDTO;
 import com.senior.hr.DTO.BenefitDTO;
+import com.senior.hr.DTO.RegisterResponseDTO;
 
 import java.util.List;
 

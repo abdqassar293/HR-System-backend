@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -41,9 +42,9 @@ public class ReportsServiceImpl implements ReportsService {
         report.setIssuer(manager);
         report.setDateIssued(Date.valueOf(LocalDate.now()));
         report.setReportDescription(reportsDTORequest.getReportDescription());
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://192.168.1.105:1998/");
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://192.168.73.87:1998/");
         builder.queryParam("text", reportsDTORequest.getReportDescription());
-        String response = restTemplate.getForObject(builder.toUriString(), String.class);
+        String response = restTemplate.getForObject(builder.encode(StandardCharsets.UTF_8).toUriString(), String.class);
         int classValue = 0;
         String className = "AI serverDown";
         try {

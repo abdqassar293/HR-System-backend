@@ -21,7 +21,7 @@ public class ApplicationMapper {
         Application application = new Application();
         application.setEnglishLevel(applicationDTO.getEnglishLevel());
         application.setMotivationLetter(applicationDTO.getMotivationLetter());
-        application.setProgrammingLanguage(application.getProgrammingLanguage());
+        application.setProgrammingLanguage(applicationDTO.getProgrammingLanguage());
         if (applicationDTO.getInterviewDate() != null) {
             application.setInterviewDate(LocalDateTime.parse(applicationDTO.getInterviewDate(), dtf));
         }

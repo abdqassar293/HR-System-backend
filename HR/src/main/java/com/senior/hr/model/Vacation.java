@@ -27,5 +27,5 @@ public class Vacation {
     private String endYearMonth;
     @ManyToOne
     @JoinColumn(name = "employee_id")
-    private Employee employee;
+    private UserEntity employee;
 }

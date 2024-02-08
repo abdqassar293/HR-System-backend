@@ -23,7 +23,6 @@ public class ApplicationController {
     }
 
     @PostMapping("addNewApplication")
-    @Async
     public void addNewApplication(@RequestBody ApplicationDTO applicationDTO) {
         applicationService.addApplication(applicationDTO);
     }

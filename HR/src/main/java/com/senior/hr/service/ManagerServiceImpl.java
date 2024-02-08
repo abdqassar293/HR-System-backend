@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -75,7 +76,7 @@ public class ManagerServiceImpl implements ManagerService {
         manager.setDateOfBirth(employee.getDateOfBirth());
         List<Benefit> benefits = benefitRepository.findAll();
         manager.setSalary(makeManagerRequestDTO.getNewSalary());
-        manager.setBenefits(List.of(benefits.get(0), benefits.get(1)));
+        manager.setBenefits(Set.of(benefits.get(0), benefits.get(1)));
         Manager savedManager = managerRepository.save(manager);
         return managerMapper.managerToManagerDTO(savedManager);
     }

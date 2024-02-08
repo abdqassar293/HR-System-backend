@@ -2,9 +2,9 @@ package com.senior.hr.service;
 
 import com.senior.hr.DTO.VacationDTO;
 import com.senior.hr.mapper.VacationMapper;
-import com.senior.hr.model.Employee;
+import com.senior.hr.model.UserEntity;
 import com.senior.hr.model.Vacation;
-import com.senior.hr.repository.EmployeeRepository;
+import com.senior.hr.repository.UserEntityRepository;
 import com.senior.hr.repository.VacationRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class VacationServiceImpl implements VacationService {
     private final VacationRepository vacationRepository;
-    private final EmployeeRepository employeeRepository;
+    private final UserEntityRepository employeeRepository;
     private final VacationMapper vacationMapper;
 
     @Override
@@ -27,7 +27,7 @@ public class VacationServiceImpl implements VacationService {
 
     @Override
     public List<VacationDTO> findAllByEmployee(String employeeUsername) {
-        Employee employee = employeeRepository.findByUsername(employeeUsername).orElseThrow();
+        UserEntity employee = employeeRepository.findByUsername(employeeUsername).orElseThrow();
         return vacationRepository.findAllByEmployee(employee).stream().map(vacationMapper::vacationToVacationDTO).collect(Collectors.toList());
     }
 
@@ -40,7 +40,7 @@ public class VacationServiceImpl implements VacationService {
     public VacationDTO addVacationRequest(VacationDTO vacationDTO) {
         Vacation vacation = vacationMapper.vacationDTOToVacation(vacationDTO);
         vacation.setApproved(false);
-        Employee employee = employeeRepository.findByUsername(vacationDTO.getEmployeeUsername()).orElseThrow();
+        UserEntity employee = employeeRepository.findByUsername(vacationDTO.getEmployeeUsername()).orElseThrow();
         vacation.setEmployee(employee);
         vacation.setStartYearMonth(YearMonth.from(vacation.getStartDate()).toString());
         vacation.setEndYearMonth(YearMonth.from(vacation.getEndDate()).toString());

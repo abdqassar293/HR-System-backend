@@ -10,6 +10,10 @@ import com.senior.hr.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
@@ -17,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -24,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,7 +53,6 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     @Transactional
-    @Async
     public void addApplication(ApplicationDTO applicationDTO) {
         Application application = applicationMapper.applicationDTOToApplication(applicationDTO);
         //TODO Exception handling
@@ -57,10 +62,15 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setVacancy(vacancy);
         application.setApplicationDate(Date.valueOf(LocalDate.now()));
         previousProjectRepository.saveAll(application.getPreviousProjects());
-
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://192.168.1.105:1999/");
-        builder.queryParam("text", application.getMotivationLetter());
-        String response = restTemplate.getForObject(builder.toUriString(), String.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+// Create a HttpEntity object with the headers
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://192.168.73.87:1999/");
+        builder.queryParam("text", applicationDTO.getMotivationLetter());
+        //String response = restTemplate.getForObject(builder.toUriString(), String.class);
+        String response = restTemplate.exchange(builder.encode(StandardCharsets.UTF_8).toUriString(), HttpMethod.GET, entity, String.class).getBody();
+        log.error("\"" + applicationDTO.getMotivationLetter() + "\"");
         ScreeningResults screeningResults = new ScreeningResults();
         try {
             JsonNode node = objectMapper.readTree(response);
@@ -132,7 +142,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(application.getApplicant().getEmail());
         message.setSubject("you are qualified for an interview");
-        message.setText("you are qualified for an Interview at our company for your application for " + application.getVacancy().getJobTitle() + " position." + '\n' + "your interview is at " + application.getApplicationDate().toLocalDate().getDayOfWeek() + " " + qualifyApplicationResponseDTO.getInterviewDate() + ".");
+        message.setText("you are qualified for an Interview at our company for your application for " + application.getVacancy().getJobTitle().getPositionName() + " position." + '\n' + "your interview is at " + application.getApplicationDate().toLocalDate().getDayOfWeek() + " " + qualifyApplicationResponseDTO.getInterviewDate() + ".");
         mailSender.send(message);
         return qualifyApplicationResponseDTO;
     }
@@ -194,7 +204,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         employee.setDateOfBirth(applicant.getDateOfBirth());
         List<Benefit> benefits = benefitRepository.findAll();
         employee.setSalary(hireRequestDTO.getSalary());
-        employee.setBenefits(List.of(benefits.get(0), benefits.get(1)));
+        employee.setBenefits(Set.of(benefits.get(0), benefits.get(1)));
         employee.setPosition(positionRepository.findByPositionName(application.getVacancy().getJobTitle().getPositionName()).orElseThrow());
         employee.setManager(managerRepository.findByUsername(hireRequestDTO.getManagerUsername()).orElseThrow());
         employeeRepository.save(employee);
