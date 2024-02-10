@@ -58,6 +58,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Transactional
     public EmployeeDTO findEmployeeByUsername(String username) {
         //Todo exception handling
         return employeeMapper.employeeToEmployeeDTO(employeeRepository.findByUsername(username).orElseThrow());

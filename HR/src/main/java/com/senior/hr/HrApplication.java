@@ -11,9 +11,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import javax.swing.text.DateFormatter;
 import java.sql.Date;
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -55,7 +53,7 @@ class BootStrap implements CommandLineRunner {
     @Transactional
     @Override
     public void run(String... args) throws Exception {
-        Role hrRole = new Role();
+       /* Role hrRole = new Role();
         hrRole.setRoleName("HR");
         roleRepository.save(hrRole);
         Role applicantRole = new Role();
@@ -352,6 +350,6 @@ class BootStrap implements CommandLineRunner {
         report.setEmployee(employee);
         report.setDateIssued(Date.valueOf(LocalDate.now()));
         report.setReportDescription("he is good at team work and working with other colleagues");
-        reportsRepository.save(report);
+        reportsRepository.save(report);*/
     }
 }
