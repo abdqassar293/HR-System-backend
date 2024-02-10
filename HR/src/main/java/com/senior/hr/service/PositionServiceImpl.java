@@ -2,6 +2,7 @@ package com.senior.hr.service;
 
 import com.senior.hr.DTO.PositionDTO;
 import com.senior.hr.mapper.PositionMapper;
+import com.senior.hr.model.Employee;
 import com.senior.hr.model.Position;
 import com.senior.hr.repository.EmployeeRepository;
 import com.senior.hr.repository.PositionRepository;
@@ -34,6 +35,7 @@ public class PositionServiceImpl implements PositionService {
 
     @Override
     public void deletePositionById(Long positionId) {
+        Position position = positionRepository.findById(positionId).orElseThrow();
         positionRepository.deleteById(positionId);
     }
 }

@@ -43,20 +43,25 @@ public class ReportsServiceImpl implements ReportsService {
         report.setDateIssued(Date.valueOf(LocalDate.now()));
         report.setReportDescription(reportsDTORequest.getReportDescription());
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://192.168.73.87:1998/");
-        builder.queryParam("text", reportsDTORequest.getReportDescription());
-        String response = restTemplate.getForObject(builder.encode(StandardCharsets.UTF_8).toUriString(), String.class);
-        int classValue = 0;
-        String className = "AI serverDown";
         try {
-            Map<String, Object> map = null;
-            map = objectMapper.readValue(response, Map.class);
-            classValue = (int) map.get("class");
-            className = (String) map.get("class_name");
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            String response = restTemplate.getForObject(builder.encode(StandardCharsets.UTF_8).toUriString(), String.class);
+            int classValue = 0;
+            String className = "AI serverDown";
+            try {
+                Map<String, Object> map = null;
+                map = objectMapper.readValue(response, Map.class);
+                classValue = (int) map.get("class");
+                className = (String) map.get("class_name");
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+            report.setRating(classValue);
+            report.setReport_result(className);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            report.setRating(10);
+            report.setReport_result("no AI result");
         }
-        report.setRating(classValue);
-        report.setReport_result(className);
         reportsRepository.save(report);
     }
 

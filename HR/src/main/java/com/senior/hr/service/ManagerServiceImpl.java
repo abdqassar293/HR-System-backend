@@ -27,6 +27,7 @@ public class ManagerServiceImpl implements ManagerService {
     private final VacationRepository vacationRepository;
     private final WarningRepository warningRepository;
     private final BenefitRepository benefitRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public List<ManagerResponseDTO> listAllManagers() {
@@ -59,6 +60,7 @@ public class ManagerServiceImpl implements ManagerService {
         warningRepository.deleteByEmployee(employee);
         reportsRepository.deleteByEmployee(employee);
         employeeRepository.delete(employee);
+        refreshTokenRepository.deleteByUser(employee);
         Manager manager = new Manager();
         manager.setContractNumber(makeManagerRequestDTO.getNewContractNumber());
         manager.setUsername(employee.getUsername());
@@ -71,7 +73,7 @@ public class ManagerServiceImpl implements ManagerService {
         manager.setDegree(employee.getDegree());
         manager.setMotherName(employee.getMotherName());
         manager.setFatherName(employee.getFatherName());
-        manager.setRole(roleRepository.findRoleByRoleName("Manager").orElseThrow());
+        manager.setRole(roleRepository.findRoleByRoleName("MG").orElseThrow());
         manager.setPlaceOfBirth(employee.getPlaceOfBirth());
         manager.setDateOfBirth(employee.getDateOfBirth());
         List<Benefit> benefits = benefitRepository.findAll();

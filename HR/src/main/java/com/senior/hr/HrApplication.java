@@ -11,9 +11,13 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import javax.swing.text.DateFormatter;
 import java.sql.Date;
+import java.text.DateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -58,7 +62,7 @@ class BootStrap implements CommandLineRunner {
         applicantRole.setRoleName("APP");
         roleRepository.save(applicantRole);
         Role employeeRole = new Role();
-        employeeRole.setRoleName("Employee");
+        employeeRole.setRoleName("EMP");
         roleRepository.save(employeeRole);
         Role managerRole = new Role();
         managerRole.setRoleName("MG");
@@ -305,6 +309,19 @@ class BootStrap implements CommandLineRunner {
         application1.setProgrammingLanguage("java");
         application1.setScreeningResults(screeningResults1);
         applicationRepository.save(application1);
+
+        Application application2 = new Application();
+        application2.setPreviousProjects(List.of());
+        application2.setApplicationDate(Date.valueOf(LocalDate.now()));
+        application2.setMotivationLetter("ghhhhhhhhghghtuguhtuhguthjdfpgbdfsgidsfhgidhsfgpdfgihdfgiodhfgiopdfhgoidhsfgopidsfgpoidhfgiodshfgiohdfsioghdopsfhgoidfshgoidhfsgiohdsfighdoisfhgoidsphfgpoidhfsgidsfghpdfoghpdofghdosfpghodifhgdfogpdfshgpdosfghidfgihdfpsghdfhigopdsifghoidfhgoidhfghidfghoifdpshgoipdfhgpoidgi");
+        application2.setApplicant(applicant1);
+        application2.setVacancy(vacancy);
+        application2.setQualifiedForInterview(true);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        application2.setInterviewDate(LocalDateTime.parse("2024-01-25 12:00", dtf));
+        application2.setEnglishLevel("A1");
+        application2.setProgrammingLanguage("java");
+        applicationRepository.save(application2);
 
         Vacation vacation = new Vacation();
         vacation.setNumberOfDays(2);

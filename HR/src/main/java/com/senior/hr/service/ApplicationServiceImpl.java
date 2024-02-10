@@ -16,7 +16,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -27,7 +26,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -36,6 +34,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Slf4j
 public class ApplicationServiceImpl implements ApplicationService {
+    private final RefreshTokenRepository refreshTokenRepository;
     private final ApplicationMapper applicationMapper;
     private final ApplicationRepository applicationRepository;
     private final VacancyRepository vacancyRepository;
@@ -62,39 +61,37 @@ public class ApplicationServiceImpl implements ApplicationService {
         application.setVacancy(vacancy);
         application.setApplicationDate(Date.valueOf(LocalDate.now()));
         previousProjectRepository.saveAll(application.getPreviousProjects());
+        ScreeningResults screeningResults = new ScreeningResults();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-// Create a HttpEntity object with the headers
-        HttpEntity<String> entity = new HttpEntity<String>(headers);
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://192.168.73.87:1999/");
-        builder.queryParam("text", applicationDTO.getMotivationLetter());
-        //String response = restTemplate.getForObject(builder.toUriString(), String.class);
-        String response = restTemplate.exchange(builder.encode(StandardCharsets.UTF_8).toUriString(), HttpMethod.GET, entity, String.class).getBody();
-        log.error("\"" + applicationDTO.getMotivationLetter() + "\"");
-        ScreeningResults screeningResults = new ScreeningResults();
         try {
-            JsonNode node = objectMapper.readTree(response);
-            // Get the value of the prediction key from the node and parse it as a double array
-            String prediction = objectMapper.readValue(node.get("prediction").toString(), String.class);
-            prediction = prediction.replaceAll("[\\[\\]]", "");
-            // Split the input string on comma and store the result in a string array
-            String[] output = prediction.split(",");
-            // Print the output array
-            log.error("sdfsdfsdfsdfsdf" + Arrays.toString(output));
-            screeningResults.setSoftwareDeveloper(Double.parseDouble(output[0]) * 100);
-            screeningResults.setFrontEnd(Double.parseDouble(output[1]) * 100);
-            screeningResults.setNetworkAdmin(Double.parseDouble(output[2]) * 100);
-            screeningResults.setWebDeveloper(Double.parseDouble(output[3]) * 100);
-            screeningResults.setProjectManager(Double.parseDouble(output[4]) * 100);
-            screeningResults.setDatabaseAdmin(Double.parseDouble(output[5]) * 100);
-            screeningResults.setSecurityAnalyst(Double.parseDouble(output[6]) * 100);
-            screeningResults.setSystemAdmin(Double.parseDouble(output[7]) * 100);
-            screeningResults.setPythonDeveloper(Double.parseDouble(output[8]) * 100);
-            screeningResults.setJavaDeveloper(Double.parseDouble(output[9]) * 100);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+            HttpEntity<String> entity = new HttpEntity<>(headers);
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://192.168.73.87:1999/");
+            builder.queryParam("text", applicationDTO.getMotivationLetter());
+            String response = restTemplate.exchange(builder.encode(
+                    StandardCharsets.UTF_8).toUriString(), HttpMethod.GET, entity, String.class).getBody();
+            log.error("\"" + applicationDTO.getMotivationLetter() + "\"");
+            try {
+                JsonNode node = objectMapper.readTree(response);
+                String prediction = objectMapper.readValue(node.get("prediction").toString(), String.class);
+                prediction = prediction.replaceAll("[\\[\\]]", "");
+                String[] output = prediction.split(",");
+                screeningResults.setSoftwareDeveloper(Double.parseDouble(output[0]) * 100);
+                screeningResults.setFrontEnd(Double.parseDouble(output[1]) * 100);
+                screeningResults.setNetworkAdmin(Double.parseDouble(output[2]) * 100);
+                screeningResults.setWebDeveloper(Double.parseDouble(output[3]) * 100);
+                screeningResults.setProjectManager(Double.parseDouble(output[4]) * 100);
+                screeningResults.setDatabaseAdmin(Double.parseDouble(output[5]) * 100);
+                screeningResults.setSecurityAnalyst(Double.parseDouble(output[6]) * 100);
+                screeningResults.setSystemAdmin(Double.parseDouble(output[7]) * 100);
+                screeningResults.setPythonDeveloper(Double.parseDouble(output[8]) * 100);
+                screeningResults.setJavaDeveloper(Double.parseDouble(output[9]) * 100);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
-
         ScreeningResults savedScreeningResults = screeningResultsRepository.save(screeningResults);
         application.setScreeningResults(savedScreeningResults);
         applicationRepository.save(application);
@@ -139,11 +136,15 @@ public class ApplicationServiceImpl implements ApplicationService {
         QualifyApplicationResponseDTO qualifyApplicationResponseDTO = new QualifyApplicationResponseDTO();
         qualifyApplicationResponseDTO.setInterviewDate(application.getInterviewDate().format(dtf));
         qualifyApplicationResponseDTO.setMessage("Date reserved");
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(application.getApplicant().getEmail());
-        message.setSubject("you are qualified for an interview");
-        message.setText("you are qualified for an Interview at our company for your application for " + application.getVacancy().getJobTitle().getPositionName() + " position." + '\n' + "your interview is at " + application.getApplicationDate().toLocalDate().getDayOfWeek() + " " + qualifyApplicationResponseDTO.getInterviewDate() + ".");
-        mailSender.send(message);
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(application.getApplicant().getEmail());
+            message.setSubject("you are qualified for an interview");
+            message.setText("you are qualified for an Interview at our company for your application for " + application.getVacancy().getJobTitle().getPositionName() + " position." + '\n' + "your interview is at " + application.getApplicationDate().toLocalDate().getDayOfWeek() + " " + qualifyApplicationResponseDTO.getInterviewDate() + ".");
+            mailSender.send(message);
+        } catch (Exception e) {
+            System.out.println(" ");
+        }
         return qualifyApplicationResponseDTO;
     }
 
@@ -186,6 +187,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         Application application = applicationRepository.findById(hireRequestDTO.getApplicationId()).orElseThrow();
         applicationRepository.deleteAllByApplicant(application.getApplicant());
         Applicant applicant = applicantRepository.findByUsername(application.getApplicant().getUsername()).orElseThrow();
+        refreshTokenRepository.deleteByUser(applicant);
         applicantRepository.deleteById(applicant.getId());
         Employee employee = new Employee();
         employee.setContractNumber(hireRequestDTO.getContractNumber());
@@ -199,7 +201,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         employee.setDegree(applicant.getDegree());
         employee.setMotherName(applicant.getMotherName());
         employee.setFatherName(applicant.getFatherName());
-        employee.setRole(roleRepository.findRoleByRoleName("Employee").orElseThrow());
+        employee.setRole(roleRepository.findRoleByRoleName("EMP").orElseThrow());
         employee.setPlaceOfBirth(applicant.getPlaceOfBirth());
         employee.setDateOfBirth(applicant.getDateOfBirth());
         List<Benefit> benefits = benefitRepository.findAll();

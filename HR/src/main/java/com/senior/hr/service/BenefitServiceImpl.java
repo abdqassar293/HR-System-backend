@@ -39,7 +39,9 @@ public class BenefitServiceImpl implements BenefitService {
     public void deleteBenefitById(Long benefitId) {
         Benefit benefit = benefitRepository.findById(benefitId).orElseThrow();
         List<Employee> employees = benefit.getEmployees();
+        List<Manager> managers = benefit.getManagers();
         employees.forEach(employee -> employee.getBenefits().remove(benefit));
+        managers.forEach(manager -> manager.getBenefits().remove(benefit));
         benefitRepository.deleteById(benefitId);
     }
 

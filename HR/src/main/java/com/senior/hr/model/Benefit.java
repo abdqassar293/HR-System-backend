@@ -24,4 +24,6 @@ public class Benefit {
     @ManyToMany(mappedBy = "benefits")
     private List<Employee> employees = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "benefits")
+    private List<Manager> managers = new ArrayList<>();
 }
