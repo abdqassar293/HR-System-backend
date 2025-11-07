@@ -10,4 +10,6 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     List<Attendance> findAttendanceByEmployeeAndMonthAndYear(Employee employee, Integer month, Integer year);
 
     List<Attendance> findAttendanceByEmployeeAndYear(Employee employee, Integer year);
+
+    void deleteByEmployee(Employee employee);
 }

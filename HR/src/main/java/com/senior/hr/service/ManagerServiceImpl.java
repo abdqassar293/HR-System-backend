@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Slf4j
 public class ManagerServiceImpl implements ManagerService {
+    private final RealSalaryRepository realSalaryRepository;
+    private final AttendanceRepository attendanceRepository;
     private final ReportsRepository reportsRepository;
     private final ManagerRepository managerRepository;
     private final EmployeeRepository employeeRepository;
@@ -60,6 +62,8 @@ public class ManagerServiceImpl implements ManagerService {
         warningRepository.deleteByEmployee(employee);
         reportsRepository.deleteByEmployee(employee);
         employeeRepository.delete(employee);
+        realSalaryRepository.deleteByEmployee(employee);
+        attendanceRepository.deleteByEmployee(employee);
         refreshTokenRepository.deleteByUser(employee);
         Manager manager = new Manager();
         manager.setContractNumber(makeManagerRequestDTO.getNewContractNumber());
@@ -93,6 +97,7 @@ public class ManagerServiceImpl implements ManagerService {
     }
 
     @Override
+    @Transactional
     public List<EmployeeDTO> listAllManagerEmployees(String managerUsername) {
         //Todo add exception handling
         Manager manager = managerRepository.findByUsername(managerUsername).orElseThrow();

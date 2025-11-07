@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface RealSalaryRepository extends JpaRepository<RealSalary, Long> {
     List<RealSalary> findByEmployeeAndMonthAndYear(Employee employee, Integer month, Integer year);
+    void deleteByEmployee(Employee employee);
 }

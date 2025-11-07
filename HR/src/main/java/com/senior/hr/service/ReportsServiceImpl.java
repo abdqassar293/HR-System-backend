@@ -42,7 +42,8 @@ public class ReportsServiceImpl implements ReportsService {
         report.setIssuer(manager);
         report.setDateIssued(Date.valueOf(LocalDate.now()));
         report.setReportDescription(reportsDTORequest.getReportDescription());
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://192.168.73.87:1998/");
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://192.168.94.87:1998/");
+        builder.queryParam("text", reportsDTORequest.getReportDescription());
         try {
             String response = restTemplate.getForObject(builder.encode(StandardCharsets.UTF_8).toUriString(), String.class);
             int classValue = 0;

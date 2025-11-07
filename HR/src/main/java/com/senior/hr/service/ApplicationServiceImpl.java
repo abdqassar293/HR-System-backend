@@ -66,7 +66,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         try {
             HttpEntity<String> entity = new HttpEntity<>(headers);
-            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://192.168.73.87:1999/");
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("http://192.168.94.87:1999/");
             builder.queryParam("text", applicationDTO.getMotivationLetter());
             String response = restTemplate.exchange(builder.encode(
                     StandardCharsets.UTF_8).toUriString(), HttpMethod.GET, entity, String.class).getBody();
